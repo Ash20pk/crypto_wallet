@@ -9,6 +9,8 @@
 }
 
 
+
+
 .transfer_form .input-field
 {
    color: #282525;
@@ -24,6 +26,10 @@
   border-color: rgba(51, 255, 0, 0.836); /* Red border when active */
 }
 
+.home_screen_login .input-field
+{
+  color: #050505;
+}
 
 .home_header p
 {
