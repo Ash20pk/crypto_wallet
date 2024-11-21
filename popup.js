@@ -693,3 +693,51 @@ function changeAccount(element) {
 }
 
 window.onload = myFunction;
+
+
+
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Set the "Assets" button as active by default
+  const assetsButton = document.getElementById('open_assets');
+  assetsButton.classList.add('active');
+  
+  // Show the "Assets" section by default
+  handleTabSwitch('open_assets');
+});
+
+document.querySelectorAll('.home_tabs p').forEach(button => {
+  button.addEventListener('click', function() {
+    // Remove 'active' class from all buttons
+    document.querySelectorAll('.home_tabs p').forEach(b => b.classList.remove('active'));
+
+    // Add 'active' class to the clicked button
+    this.classList.add('active');
+    
+    // Now display the corresponding data (Assets, Logout, Activity)
+    const id = this.id;
+    handleTabSwitch(id);
+  });
+});
+
+// function handleTabSwitch(tabId) {
+//   const assetsDiv = document.getElementById('assets');
+//   const activityDiv = document.querySelector('.activity');
+//   const logoutDiv = document.querySelector('.logout'); // Assuming there's a logout div
+
+//   // Hide all sections
+//   assetsDiv.style.display = 'none';
+//   activityDiv.style.display = 'none';
+//   logoutDiv.style.display = 'none';
+
+//   // Show the appropriate section based on the tab clicked
+//   if (tabId === 'open_assets') {
+//     assetsDiv.style.display = 'block';
+//   } else if (tabId === 'open_activity') {
+//     activityDiv.style.display = 'block';
+//   } else if (tabId === 'logout') {
+//     logoutDiv.style.display = 'block';
+//   }
+// }
