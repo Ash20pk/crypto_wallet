@@ -64,7 +64,7 @@ Follow these steps to set up your MongoDB cluster:
 
 ## Contributing
 
-We love contributions! Here's how you can help make the Flash Loan even better:
+We love contributions! Here's how you can help make the Crypto Wallet even better:
 
 1. Fork the project (`git repo fork https://github.com/jatinmeta/crypto_wallet.git`)
 2. Create your feature branch (`git checkout -b New_Feature`)
