@@ -54,6 +54,12 @@ Follow these steps to set up your MongoDB cluster:
     ```bash
     npm run start
     ```
+5. Load MetaSchool Crypto Wallet Extension in Chrome:
+    - Open Chrome and go to Extensions (three dots > More Tools > Extensions).
+    - Enable Developer mode (toggle at the top).
+    - Click Load unpacked, and select the folder where the MetaSchool Crypto Wallet project is located.
+    - The extension will now appear in your Chrome toolbar .
+
 
 ## Contributing
 
