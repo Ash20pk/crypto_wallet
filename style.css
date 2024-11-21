@@ -9,6 +9,14 @@
 }
 
 
+.assets_item:hover
+{
+opacity: 0.7;
+}
+
+.home_feature_item:hover {
+  opacity: 0.7;
+}
 
 
 .transfer_form .input-field
@@ -489,6 +497,14 @@ textarea {
   color: #00ff75;
 }
 
+.home_feature_item {
+  cursor: pointer; /* Ensures the cursor appears as a pointer when hovering over the feature items */
+}
+
+
+
+
+
 .home_header_img {
   margin-top: 1rem;
   width: 50px;
@@ -528,6 +544,9 @@ textarea {
   border-top: 1px solid #00ff75;
   padding: 1rem 0;
 }
+
+
+
 
 .assets_item_img {
   width: 20px;
