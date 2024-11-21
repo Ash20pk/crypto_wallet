@@ -708,19 +708,19 @@ document.addEventListener('DOMContentLoaded', function() {
   handleTabSwitch('open_assets');
 });
 
-// document.querySelectorAll('.home_tabs p').forEach(button => {
-//   button.addEventListener('click', function() {
-//     // Remove 'active' class from all buttons
-//     document.querySelectorAll('.home_tabs p').forEach(b => b.classList.remove('active'));
+document.querySelectorAll('.home_tabs p').forEach(button => {
+  button.addEventListener('click', function() {
+    // Remove 'active' class from all buttons
+    document.querySelectorAll('.home_tabs p').forEach(b => b.classList.remove('active'));
 
-//     // Add 'active' class to the clicked button
-//     this.classList.add('active');
+    // Add 'active' class to the clicked button
+    this.classList.add('active');
     
-//     // Now display the corresponding data (Assets, Logout, Activity)
-//     const id = this.id;
-//     handleTabSwitch(id);
-//   });
-// });
+    // Now display the corresponding data (Assets, Logout, Activity)
+    const id = this.id;
+    handleTabSwitch(id);
+  });
+});
 
 // function handleTabSwitch(tabId) {
 //   const assetsDiv = document.getElementById('assets');
