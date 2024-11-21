@@ -8,6 +8,16 @@
   transition: all 0.3s ease; /* Smooth transition for color and border */
 }
 
+
+.transfer_form .input-field
+{
+   color: #282525;
+}
+.import_account .input-field
+{
+  color: #282525;
+}
+
 .home_tabs p.active {
   background-color: #ffffff; /* Green background when active */
   color: #fff; /* White text when active */
