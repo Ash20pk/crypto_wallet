@@ -270,6 +270,7 @@ function getSelectedNetwork(e) {
   const parsedObj = JSON.parse(str);
   checkBlance(parsedObj.address)
   document.getElementById("userAddress").style.display = "block";
+  myFunction();
 }
 
 function setNetwork() {
@@ -567,6 +568,7 @@ async function myFunction() {
 
   const tokenRender = document.querySelector(".assets");
   const accountRender = document.querySelector(".accountList");
+  tokenRender.innerHTML ="";
 
   try {
     // Fetch all tokens
@@ -574,25 +576,39 @@ async function myFunction() {
     const tokenData = await tokenResponse.json();
     const tokens = tokenData.data.tokens;
 
-    if (!Array.isArray(tokens)) {
-      throw new Error("Expected an array but got: " + typeof tokens);
+    if (!Array.isArray(tokens)) 
+    {
+        throw new Error("Expected an array but got: " + typeof tokens);
     }
 
-    let tokenElements = "";
-    for (const token of tokens) {
-      const balance = await fetchTokenBalance(token.address, parsedObj.address); //connected_account
-      console.log("fetchTokenBalance", balance);
-
-      tokenElements += `
-        <div class="assets_item">
-          <img class="assets_item_img" src="./assets/theblockchaincoders.png" alt=""/>
-          <span>${balance}</span>
-          <span>${token.symbol}</span>
-        </div>
-      `;
+    const filteredAsset = tokens.filter(i => 
+      {
+        return (i.provider.toLowerCase() == providerURL.toLowerCase() )
+      }
+      );
+    console.log("filteredAsset",filteredAsset);
+    if (filteredAsset.length == 0) 
+    {
+        console.log("No matching Assets found for this address.");
+        tokenRender.innerHTML = '<p>No Assets found for this address.</p>';
     }
-
-    tokenRender.innerHTML = tokenElements;
+    if(filteredAsset.length != 0)
+    {
+        let tokenElements = "";
+        for (const token of filteredAsset) {
+          const balance = await fetchTokenBalance(token.address, parsedObj.address); //connected_account
+          console.log("fetchTokenBalance", balance);
+    
+          tokenElements += `
+            <div class="assets_item">
+              <img class="assets_item_img" src="./assets/theblockchaincoders.png" alt=""/>
+              <span>${balance}</span>
+              <span>${token.symbol}</span>
+            </div>
+          `;
+        }
+        tokenRender.innerHTML = tokenElements;
+    }
 
   } catch (error) {
     console.error("Error fetching tokens:", error);
