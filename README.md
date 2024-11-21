@@ -58,7 +58,8 @@ Follow these steps to set up your MongoDB cluster:
     - Open Chrome and go to Extensions (three dots > More Tools > Extensions).
     - Enable Developer mode (toggle at the top).
     - Click Load unpacked, and select the folder where the MetaSchool Crypto Wallet project is located.
-    - The extension will now appear in your Chrome toolbar .
+    - The extension will now appear in your Chrome toolbar.
+    - Now you can use the Crypto Wallet
 
 
 ## Contributing
