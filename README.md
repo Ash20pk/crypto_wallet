@@ -43,7 +43,7 @@ Follow these steps to set up your MongoDB cluster:
     ```
 2. Install Dependencies: Navigate to the project directory and install the necessary dependencies:
     ```bash
-    cd chromeapi
+    cd crypto_wallet/chromeapi
     npm install --y
     ```
 3. Configure MongoDB:
