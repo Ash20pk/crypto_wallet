@@ -1,4 +1,18 @@
 /*color: #00ff75;*/
+.home_tabs p {
+  padding: 0.5rem 1rem; /* Button padding */
+  border-radius: 0.5rem; /* Rounded corners */
+  border: 2px solid transparent; /* Always show the border */
+  background-color: transparent; /* Default background */
+  color: #00ff75; /* Default text color */
+  transition: all 0.3s ease; /* Smooth transition for color and border */
+}
+
+.home_tabs p.active {
+  background-color: #ffffff; /* Green background when active */
+  color: #fff; /* White text when active */
+  border-color: rgba(51, 255, 0, 0.836); /* Red border when active */
+}
 
 
 .home_header p
