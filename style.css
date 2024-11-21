@@ -8,7 +8,16 @@
   transition: all 0.3s ease; /* Smooth transition for color and border */
 }
 
+/* .home h1
+{
+  color: #00ff75
+}
+ */
 
+.lists p:hover
+{
+  opacity: 0.7;
+}
 .assets_item:hover
 {
 opacity: 0.7;
@@ -21,11 +30,11 @@ opacity: 0.7;
 
 .transfer_form .input-field
 {
-   color: #282525;
+   color: #040404;
 }
 .import_account .input-field
 {
-  color: #282525;
+  color: #000000;
 }
 
 .home_tabs p.active {
@@ -129,7 +138,7 @@ body {
 
 .header_network p {
   border: 1px solid #10c562;
-  color: #0ff97c;
+  color: #10c562;
   font-weight: bold;
   padding: 0.5rem 1rem;
   border-radius: 1rem;
@@ -199,7 +208,6 @@ body {
   padding: 1rem 6rem;
   margin-top: 1rem;
 }
-
 
 
 .home h1,
