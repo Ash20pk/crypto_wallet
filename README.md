@@ -4,37 +4,40 @@ The MetaSchool Crypto Wallet is a user-friendly cryptocurrency wallet that allow
 
 ## Table of Contents
 
-- [Prerequisites](#prerequisites)
+- [Tech-Stack](tech-stack)
 - [Features](#features)
+- [Prerequisites](#prerequisites)
 - [How to Run the Crypto Wallet](#how-to-run-the-crypto-wallet)
+- [Screenshots](#screenshots)
 - [Contributing](#contributing)
 - [Contact](#contact)
 
-## Prerequisites
+## Tech-Stack
 - Solidity
-- Javascript
-- API Developement 
 - MongoDB
+- ether.js
+- express.js
+- Javascript 
 
 ## Features
 This Crypto Wallet application includes the following features:
 
-- Import Account Using Private Key: Securely import a crypto wallet using the private key.
-- Import ERC-20 Tokens: Add tokens (e.g., DAI, USDT, USDC, etc.) using their token address.
-- Send Crypto: Transfer cryptocurrency to another wallet.
-- Choose Blockchain Network: Select the blockchain network (e.g., Ethereum, Binance Smart Chain) you want to interact with.
-- User Authentication: Users can sign up, log in, and log out of their accounts.
-- Account History: Track transaction history within the wallet.
+- **Import Account Using Private Key:** Securely import a crypto wallet using the private key.
+- **Import ERC-20 Tokens:** Add tokens (e.g., DAI, USDT, USDC, etc.) using their token address.
+- **Send Crypto:** Transfer cryptocurrency to another wallet.
+- **Choose Blockchain Network:** Select the blockchain network (e.g., Ethereum, Binance Smart Chain) you want to interact with.
+- **User Authentication:** Users can sign up, log in, and log out of their accounts.
+- **Account History:** Track transaction history within the wallet.
 
 
-## Setting Up MongoDB Cluster
-Follow these steps to set up your MongoDB cluster:
-
-- Sign Up/Login: Visit [MongoDB Website](https://www.mongodb.com/), and sign up or log in.
-- Create a Cluster: Once logged in, click on "Build a Cluster". Choose an AWS cloud provider, select a region, and pick a cluster tier, then click "Create Cluster".
-- Database Access: Go to the "Database Access" section to find your MongoDB username and password. Copy these credentials for use in the next steps.
-- Connection String: You will need these credentials to connect to your MongoDB cluster, which will be used in your configuration files.
-
+## Prerequisites
+- ### Setting Up MongoDB Cluster
+    Follow these steps to set up your MongoDB cluster:
+    
+    - **Sign Up/Login:** Visit [MongoDB Website](https://www.mongodb.com/), and sign up or log in.
+    - **Create a Cluster:** Once logged in, click on "Build a Cluster". Choose an AWS cloud provider, select a region, and pick a cluster tier, then click "Create Cluster".
+    - **Database Access:** Go to the "Database Access" section to find your MongoDB username and password. Copy these credentials for use in the next steps.
+    - **Connection String:** You will need these credentials to connect to your MongoDB cluster, which will be used in your configuration files.
 
 ## How to Run the Crypto Wallet
 1. Clone the repository:
@@ -60,6 +63,39 @@ Follow these steps to set up your MongoDB cluster:
     - Click Load unpacked, and select the folder where the MetaSchool Crypto Wallet project is located.
     - The extension will now appear in your Chrome toolbar.
     - Now you can use the Crypto Wallet
+
+## Screenshots
+
+<table>
+  <tr>
+    <td><img src="https://github.com/user-attachments/assets/aff72ed9-d4f6-4de4-828b-e335d1a0d519" alt="Screenshot 1" width="150"></td>
+    <td><img src="https://github.com/user-attachments/assets/9434899a-269f-494f-b131-222817b3cfba" alt="Screenshot 2" width="150"></td>
+    <td><img src="https://github.com/user-attachments/assets/1d50448b-6cb1-41b8-bf0e-fdbe72be3816" alt="Screenshot 3" width="150"></td>
+    <td><img src="https://github.com/user-attachments/assets/084886f3-32b3-4e21-9e47-20f1550fb5b2" alt="Screenshot 9" width="150"></td>
+    <td><img src="https://github.com/user-attachments/assets/ca7afda5-cd0b-41cb-bc74-1a478733fd3a" alt="Screenshot 7" width="150"></td>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/user-attachments/assets/77d88cf8-9d9f-48ca-93f7-dbe7d0e3681a" alt="Screenshot 4" width="150"></td>
+    <td><img src="https://github.com/user-attachments/assets/292c83f8-8d8c-4681-ab52-fb73f374fba4" alt="Screenshot 5" width="150"></td>
+    <td><img src="https://github.com/user-attachments/assets/fbce9cf5-6fb2-4d47-adec-9b36d2c80cc0" alt="Screenshot 6" width="150"></td>
+    <td><img src="https://github.com/user-attachments/assets/8ab7cbc9-08e4-4c85-b717-1a6b23d4bc0b" alt="Screenshot 8" width="150"></td>
+      <td><img src="https://github.com/user-attachments/assets/24257266-3e1d-43e3-98f9-c71c9454b1c3" alt="Screenshot 9" width="150"></td>
+
+  </tr>
+
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ## Contributing
