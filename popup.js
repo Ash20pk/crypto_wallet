@@ -62,15 +62,11 @@ let Activity_History = ()=>
   // Fetch transaction data from the server and populate the activity section
 
 
-userAddress
+  // userAddress***********************
   fetch("http://localhost:3000/api/v1/transactions/")
   .then((response) => response.json())
   .then((data) => 
   {
-
-
-    
-
 
       const transactions = data.data.Transaction_;
 
