@@ -1,6 +1,5 @@
 # MetaSchool Crypto Wallet
-The MetaSchool Crypto Wallet is a user-friendly cryptocurrency wallet that allows users to manage digital assets securely. Key features include importing accounts using private keys, adding ERC-20 tokens, sending crypto between wallets, and selecting blockchain networks. It also supports user authentication and tracks account history.
-
+The MetaSchool Crypto Wallet is a user-friendly cryptocurrency wallet that enables users to securely send crypto between wallets, switch between blockchain networks, manage digital assets, import accounts using private keys, add ERC-20 tokens, ensure robust authentication, and track a comprehensive account history.
 
 ## Table of Contents
 
