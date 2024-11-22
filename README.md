@@ -15,9 +15,8 @@ The MetaSchool Crypto Wallet is a user-friendly Chrome extension that allows use
 ## Tech-Stack
 - Solidity
 - MongoDB
-- ether.js
-- express.js
-- Javascript 
+- Ether.js
+- Express.js
 
 ## Features
 This Crypto Wallet application includes the following features:
