@@ -5,8 +5,9 @@ The MetaSchool Crypto Wallet is a user-friendly Chrome extension that allows use
 
 - [Tech-Stack](tech-stack)
 - [Features](#features)
-- [Prerequisites](#prerequisites)
-- [How to Run the Crypto Wallet](#how-to-run-the-crypto-wallet)
+- [Getting Started](getting-started)
+    - [Prerequisites](#prerequisites)
+    - [How to Run the Crypto Wallet](#how-to-run-the-crypto-wallet)
 - [Screenshots](#screenshots)
 - [Contributing](#contributing)
 - [Contact](#contact)
@@ -28,9 +29,9 @@ This Crypto Wallet application includes the following features:
 - **Import ERC-20 Tokens:** Add tokens (e.g., DAI, USDT, USDC, etc.) using their token address.
 - **Account History:** Track transaction history within the wallet.
 
-
-## Prerequisites
-- ### Setting Up MongoDB Cluster
+## Getting Started
+### Prerequisites
+- #### Setting Up MongoDB Cluster
     Follow these steps to set up your MongoDB cluster:
     
     - **Sign Up/Login:** Visit [MongoDB Website](https://www.mongodb.com/), and sign up or log in.
@@ -38,7 +39,7 @@ This Crypto Wallet application includes the following features:
     - **Database Access:** Go to the "Database Access" section to find your MongoDB username and password. Copy these credentials for use in the next steps.
     - **Connection String:** You will need these credentials to connect to your MongoDB cluster, which will be used in your configuration files.
 
-## How to Run the Crypto Wallet
+### How to Run the Crypto Wallet
 1. Clone the repository:
     ```bash
     git clone https://github.com/jatinmeta/crypto_wallet.git
