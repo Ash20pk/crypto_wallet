@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("transferFund").addEventListener("click", handler);
   document.getElementById("header_network").addEventListener("click", getOpenNetwork);
   document.getElementById("network_item").addEventListener("click", getSelectedNetwork);
-  document.getElementById("add_network").addEventListener("click", setNetwork);
+  // document.getElementById("add_network").addEventListener("click", setNetwork);
   document.getElementById("loginAccount").addEventListener("click", loginUser);
   document.getElementById("accountCreate").addEventListener("click", createUser);
   document.getElementById("openCreate").addEventListener("click", openCreate);
@@ -269,9 +269,9 @@ function getSelectedNetwork(e) {
   myFunction();
 }
 
-function setNetwork() {
-  document.getElementById("network").style.display = "none";
-}
+// function setNetwork() {
+//   document.getElementById("network").style.display = "none";
+// }
 
 function loginUser() {
   document.getElementById("createAccount").style.display = "none";
