@@ -21,11 +21,11 @@ The MetaSchool Crypto Wallet is a user-friendly Chrome extension that allows use
 ## Features
 This Crypto Wallet application includes the following features:
 
+- **User Authentication:** Users can sign up, log in, and log out of their accounts.
+- **Choose Blockchain Network:** Select the blockchain network (e.g., Ethereum, Binance Smart Chain) you want to interact with.
+- **Send Crypto:** Transfer cryptocurrency to another wallet.
 - **Import Account Using Private Key:** Securely import a crypto wallet using the private key.
 - **Import ERC-20 Tokens:** Add tokens (e.g., DAI, USDT, USDC, etc.) using their token address.
-- **Send Crypto:** Transfer cryptocurrency to another wallet.
-- **Choose Blockchain Network:** Select the blockchain network (e.g., Ethereum, Binance Smart Chain) you want to interact with.
-- **User Authentication:** Users can sign up, log in, and log out of their accounts.
 - **Account History:** Track transaction history within the wallet.
 
 
