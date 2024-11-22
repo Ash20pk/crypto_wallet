@@ -36,6 +36,7 @@ const POLYGON = "https://rpc.ankr.com/polygon";
 const POLYGON_AMOY = "https://rpc.ankr.com/polygon_amoy";
 const ETHEREUM = "https://rpc.ankr.com/eth";
 const SEPOLIA_TEST = "https://rpc.ankr.com/eth_sepolia";
+const BNB_Smart_chain = "https://rpc.ankr.com/bsc";
 
 let providerURL = "https://rpc.ankr.com/eth";
 
@@ -99,7 +100,8 @@ let Activity_History = ()=>
         else if(transaction.Network == POLYGON_AMOY)     {j = `https://amoy.polygonscan.com/tx/${transaction.Hash}`;}
         else if(transaction.Network == ETHEREUM)         {j = `https://etherscan.io/tx/${transaction.Hash}`;}
         else if(transaction.Network == SEPOLIA_TEST)     {j = `https://sepolia.etherscan.io//tx/${transaction.Hash}`;}
-    
+        else if(transaction.Network == BNB_Smart_chain)  {j = `https://bscscan.com/tx/${transaction.Hash}`;}
+          
 
           const transactionElement = document.createElement('div');
           transactionElement.classList.add('assets_item');
@@ -173,10 +175,11 @@ function handler()
     const a = document.getElementById("link");
 
 
-    if     (providerURL == POLYGON)         {a.href = `https://polygonscan.com/tx/${txObj.hash}`;}
+    if     (providerURL == POLYGON)          {a.href = `https://polygonscan.com/tx/${txObj.hash}`;}
     else if(providerURL == POLYGON_AMOY)     {a.href = `https://amoy.polygonscan.com/tx/${txObj.hash}`;}
     else if(providerURL == ETHEREUM)         {a.href = `https://etherscan.io/tx/${txObj.hash}`;}
-    else if(providerURL == SEPOLIA_TEST)     {a.href = `https://sepolia.etherscan.io//tx/${txObj.hash}`;}
+    else if(providerURL == SEPOLIA_TEST)     {a.href = `https://sepolia.etherscan.io/tx/${txObj.hash}`;}
+    else if(providerURL == BNB_Smart_chain)  {a.href = `https://bscscan.com/tx${txObj.hash}`;}
 
     
     document.getElementById("link").style.display = "block";
@@ -225,6 +228,7 @@ function checkBlance(address)
         else if(providerURL == POLYGON_AMOY)          {symbol = "POL";}
         else if(providerURL == ETHEREUM)              {symbol = "ETH";}
         else if(providerURL == SEPOLIA_TEST)          {symbol = "SepoliaETH";}
+        else if(providerURL == BNB_Smart_chain)       {symbol = "BNB";}
         else                                          {symbol = "symbol";}
 
         document.getElementById("accountBlance").innerHTML = `${balanceInEth} ${symbol}`;
@@ -243,23 +247,46 @@ function getSelectedNetwork(e) {
   element.innerHTML = e.target.innerHTML;
   console.log("e.target.innerHTML",e.target.innerHTML)
 
-  if (e.target.innerHTML === "Ethereum Mainnet") {
+  if (e.target.innerHTML === "Ethereum Mainnet") 
+  {
     providerURL = ETHEREUM;
     localStorage.setItem("ACTIVE_NETWORK", "Ethereum Mainnet");
     document.getElementById("network").style.display = "none";
-  } else if (e.target.innerHTML === "Polygon Mainnet") {
+  } 
+
+  else if (e.target.innerHTML === "Polygon Mainnet") 
+  {
     providerURL = POLYGON;
     localStorage.setItem("ACTIVE_NETWORK", "Polygon Mainnet");
     document.getElementById("network").style.display = "none";
-  } else if (e.target.innerHTML === "Polygon Amoy") {
+  } 
+
+  else if (e.target.innerHTML === "Polygon Amoy") 
+  {
     providerURL = POLYGON_AMOY;
     localStorage.setItem("ACTIVE_NETWORK", "Polygon Amoy");
     document.getElementById("network").style.display = "none";
-  } else if (e.target.innerHTML === "Sepolia test network") {
+  } 
+
+  else if (e.target.innerHTML === "Sepolia test network") 
+  {
     providerURL = SEPOLIA_TEST;
     localStorage.setItem("ACTIVE_NETWORK", "Sepolia test network");
     document.getElementById("network").style.display = "none";
   }
+
+  else if (e.target.innerHTML === "BNB Smart Chain") 
+    {
+      providerURL = BNB_Smart_chain;
+      localStorage.setItem("ACTIVE_NETWORK", "BNB Smart Chain");
+      document.getElementById("network").style.display = "none";
+    }
+
+
+
+
+
+
 
   console.log(providerURL);
   const str = localStorage.getItem("userWallet");
@@ -597,7 +624,7 @@ async function myFunction() {
     
           tokenElements += `
             <div class="assets_item">
-              <img class="assets_item_img" src="./assets/theblockchaincoders.png" alt=""/>
+              <img class="assets_item_img" src="./assets/metaschool_icon.png" alt=""/>
               <span>${balance}</span>
               <span>${token.symbol}</span>
             </div>
