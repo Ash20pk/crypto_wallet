@@ -130,6 +130,47 @@ document.addEventListener("DOMContentLoaded", function() {
     } else {
         console.error('Network list not found');
     }
+
+    // Fix the send button click handler
+    const transferButton = document.getElementById("open_Transfer");
+    if (transferButton) {
+        console.log('Transfer button found');
+        
+        // Add click handler to both the div and its child image
+        transferButton.addEventListener("click", function(e) {
+            console.log('Transfer button clicked');
+            e.preventDefault();
+            e.stopPropagation();
+            openTransfer();
+        });
+
+        // Also handle clicks on the image
+        const transferImage = transferButton.querySelector('.home_features_img');
+        if (transferImage) {
+            transferImage.addEventListener("click", function(e) {
+                console.log('Transfer image clicked');
+                e.preventDefault();
+                e.stopPropagation();
+                openTransfer();
+            });
+        }
+    } else {
+        console.error('Transfer button not found');
+    }
+
+    // Fix back button handler
+    const backBtn = document.getElementById("goBack");
+    if (backBtn) {
+        console.log('Back button found');
+        backBtn.addEventListener("click", function(e) {
+            console.log('Back button clicked');
+            e.preventDefault();
+            e.stopPropagation();
+            goBack();
+        });
+    } else {
+        console.error('Back button not found');
+    }
 });
 
 // Keep all your existing code below this point
@@ -549,14 +590,36 @@ function logout()
 //_______________________________________________________________________________________________________________________________________  
 function openTransfer() 
 {
-    document.getElementById("transfer_form").style.display = "block";
-    document.getElementById("home").style.display = "none";
+    console.log('openTransfer called');
+    const transferForm = document.getElementById("transfer_form");
+    const home = document.getElementById("home");
+    
+    if (transferForm && home) {
+        console.log('Showing transfer form, hiding home');
+        transferForm.style.display = "block";
+        home.style.display = "none";
+    } else {
+        console.error('Transfer form or home element not found');
+    }
 }
 //_______________________________________________________________________________________________________________________________________  
-function goBack() 
-{
-    document.getElementById("transfer_form").style.display = "none";
-    document.getElementById("home").style.display = "block";
+function goBack() {
+    console.log('goBack called');
+    const transferForm = document.getElementById("transfer_form");
+    const home = document.getElementById("home");
+    
+    if (transferForm && home) {
+        console.log('Hiding transfer form, showing home');
+        transferForm.style.display = "none";
+        home.style.display = "block";
+        
+        // Clear the form fields
+        document.getElementById("amount").value = "";
+        document.getElementById("address").value = "";
+        document.getElementById("link").style.display = "none";
+    } else {
+        console.error('Transfer form or home element not found');
+    }
 }
 //_______________________________________________________________________________________________________________________________________  
 function openImport() 

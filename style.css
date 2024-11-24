@@ -525,6 +525,101 @@ body {
 
 .transfer_form {
   display: none;
+  background: var(--background);
+  padding: 1.5rem;
+  position: relative;
+}
+
+.transfer_form .goBack {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.transfer_form .goBack:hover {
+  transform: translateX(-3px);
+}
+
+.transfer_form #heading {
+  margin-top: 3rem;
+  margin-bottom: 2rem;
+  font-size: 1.5rem;
+  color: var(--primary);
+}
+
+.transfer_form .field {
+  margin-bottom: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.transfer_form .input-field {
+  color: var(--text);
+  font-size: 1rem;
+  padding: 0.5rem;
+}
+
+.transfer_form .input-field::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.transfer_form #link {
+  display: none;
+  margin: 1rem 0;
+  color: var(--primary);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.2s;
+}
+
+.transfer_form #link:hover {
+  color: var(--success);
+}
+
+.transfer_form #transferFund {
+  width: 100%;
+  margin-top: 2rem;
+  padding: 1rem;
+  font-size: 1rem;
+  background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+  color: var(--text);
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.transfer_form #transferFund:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(39, 193, 5, 0.2);
+}
+
+.transfer_form #transfer_center {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.8);
+  padding: 2rem;
+  border-radius: var(--border-radius);
+  z-index: 1000;
+}
+
+/* Add loading animation styles */
+.transfer_form .center {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
 }
 
 .form {
