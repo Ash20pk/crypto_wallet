@@ -294,6 +294,51 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Set default active tab
     handleTabSwitch('open_assets');
+
+    // Add settings menu item click handler
+    const settingsMenuItem = document.getElementById('settings');
+    if (settingsMenuItem) {
+        settingsMenuItem.addEventListener('click', function(e) {
+            console.log('Settings menu item clicked');
+            e.preventDefault();
+            e.stopPropagation();
+            openSettingsWindow();
+        });
+    }
+
+    // Add settings item click handlers
+    const settingsImportAccount = document.getElementById('settings_import_account');
+    if (settingsImportAccount) {
+        settingsImportAccount.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            openImportModel();
+            // Hide settings window when opening import account
+            document.getElementById('settings_window').style.display = 'none';
+        });
+    }
+
+    const settingsImportToken = document.getElementById('settings_import_token');
+    if (settingsImportToken) {
+        settingsImportToken.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            openImport();
+            // Hide settings window when opening import token
+            document.getElementById('settings_window').style.display = 'none';
+        });
+    }
+
+    // Update close settings handler
+    const closeSettingsBtn = document.getElementById('close_settings');
+    if (closeSettingsBtn) {
+        closeSettingsBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            document.getElementById('settings_window').style.display = 'none';
+            document.getElementById('home').style.display = 'block';
+        });
+    }
 });
 
 // Keep all your existing code below this point
@@ -767,14 +812,14 @@ function importGoBack()
 {
     console.log('importGoBack called');
     const importToken = document.getElementById("import_token");
-    const home = document.getElementById("home");
+    const settingsWindow = document.getElementById("settings_window");
     
-    if (importToken && home) {
-        console.log('Hiding import token, showing home');
+    if (importToken && settingsWindow) {
+        console.log('Hiding import token, showing settings');
         importToken.style.display = "none";
-        home.style.display = "block";
+        settingsWindow.style.display = "block";
     } else {
-        console.error('Import token or home element not found');
+        console.error('Import token or settings window not found');
     }
 }
 //_______________________________________________________________________________________________________________________________________  
@@ -807,18 +852,17 @@ function openImportModel()
     }
 }
 //_______________________________________________________________________________________________________________________________________
-function closeImportModel() 
-{
+function closeImportModel() {
     console.log('closeImportModel called');
     const importAccount = document.getElementById("import_account");
-    const home = document.getElementById("home");
+    const settingsWindow = document.getElementById("settings_window");
     
-    if (importAccount && home) {
-        console.log('Hiding import account, showing home');
+    if (importAccount && settingsWindow) {
+        console.log('Hiding import account, showing settings');
         importAccount.style.display = "none";
-        home.style.display = "block";
+        settingsWindow.style.display = "block";
     } else {
-        console.error('Import account or home element not found');
+        console.error('Import account or settings window not found');
     }
 }
 //_______________________________________________________________________________________________________________________________________
@@ -1233,6 +1277,21 @@ async function updateTokenList() {
 
     } catch (error) {
         console.error('Error updating token list:', error);
+    }
+}
+
+// Add this function to handle settings menu item click
+function openSettingsWindow() {
+    console.log('Opening settings window');
+    const home = document.getElementById("home");
+    const settingsWindow = document.getElementById("settings_window");
+    
+    if (settingsWindow && home) {
+        settingsWindow.style.display = "block";
+        home.style.display = "none";
+        
+        // Close the dropdown menu
+        document.getElementById("settings_menu").style.display = "none";
     }
 }
 
