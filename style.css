@@ -1409,3 +1409,169 @@ body {
 .max_button:hover {
     background: rgba(39, 193, 5, 0.2);
 }
+
+/* Account UI Styles */
+.import_account {
+    display: none;
+    background: var(--background);
+    height: 100vh;
+}
+
+.account_header {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid rgba(39, 193, 5, 0.1);
+    position: relative;
+}
+
+.account_header #heading {
+    flex: 1;
+    text-align: center;
+    margin: 0;
+    color: var(--primary);
+}
+
+.account_header .goBack {
+    position: absolute;
+    left: 1rem;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.account_header .goBack:hover {
+    transform: translateX(-3px);
+}
+
+.import_section {
+    padding: 1rem;
+}
+
+.import_section .field {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(39, 193, 5, 0.1);
+    margin-bottom: 1rem;
+}
+
+.import_section textarea {
+    color: var(--text);
+    font-family: monospace;
+    font-size: 0.9rem;
+    padding: 0.5rem;
+    min-height: 80px;
+}
+
+.import_warning {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+}
+
+.import_warning svg {
+    color: #ffb700;
+}
+
+.import_section .connectWallet {
+    width: 100%;
+    margin: 0;
+}
+
+/* Import Token UI Styles */
+.import_token {
+    display: none;
+    background: var(--background);
+    height: 100vh;
+}
+
+.import_header {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid rgba(39, 193, 5, 0.1);
+    position: relative;
+}
+
+.import_header #heading {
+    flex: 1;
+    text-align: center;
+    margin: 0;
+    color: var(--primary);
+}
+
+.import_header .goBack {
+    position: absolute;
+    left: 1rem;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.import_header .goBack:hover {
+    transform: translateX(-3px);
+}
+
+.import_token_section {
+    padding: 1rem;
+}
+
+.import_token_section .field {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(39, 193, 5, 0.1);
+    margin-bottom: 1rem;
+}
+
+.import_token_section input {
+    color: var(--text);
+    font-family: monospace;
+    font-size: 0.9rem;
+    padding: 0.75rem;
+    width: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+}
+
+.import_token_section input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.import_token .import_warning {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+    padding: 0.75rem;
+    background: rgba(255, 187, 0, 0.1);
+    border-radius: var(--border-radius);
+}
+
+.import_token .import_warning svg {
+    color: #ffb700;
+    flex-shrink: 0;
+}
+
+.import_token_section .connectWallet {
+    width: 100%;
+    margin: 0;
+    padding: 1rem;
+    font-size: 1rem;
+    background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+    color: var(--text);
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.import_token_section .connectWallet:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(39, 193, 5, 0.2);
+}

@@ -361,119 +361,85 @@
             </div>
         </div>
 
-        <!-- //IMPORT COMPONENT -->
+        <!-- IMPORT TOKEN -->
         <div id="import_token" class="import_token">
-          <div class="form">
-            <img
-              id="goBack_import"
-              class="goBack"
-              src="./assets/_back.png"
-              alt=""
-            />
-            <p id="heading">Import Token</p>
-            <div class="field">
-              <svg viewBox="0 0 16 16" fill="currentColor"
-                height="16"
-                width="16"
-                xmlns="http://www.w3.org/2000/svg"
-                class="input-icon"
-              >
-                <path
-                  d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"
-                ></path>
-              </svg>
-              <input
-                type="text"
-                class="input-field"
-                placeholder="token_address"
-                id="token_address"
-              />
-            </div>
-            <p class="space"></p>
-            <div class="field">
-              <svg
-                viewBox="0 0 16 16"
-                fill="currentColor"
-                height="16"
-                width="16"
-                xmlns="http://www.w3.org/2000/svg"
-                class="input-icon"
-              >
-                <path
-                  d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"
-                ></path>
-              </svg>
+            <div class="form">
+                <div class="import_header">
+                    <img id="goBack_import" class="goBack" src="./assets/_back.png" alt=""/>
+                    <p id="heading">Import Token</p>
+                </div>
 
-              <input
-                type="text"
-                class="input-field"
-                placeholder="token name"
-                id="token_name"
-              />
-            </div>
-            <p class="space"></p>
-            <div class="field">
-              <svg
-                viewBox="0 0 16 16"
-                fill="currentColor"
-                height="16"
-                width="16"
-                xmlns="http://www.w3.org/2000/svg"
-                class="input-icon"
-              >
-                <path
-                  d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"
-                ></path>
-              </svg>
+                <!-- Import Token Section -->
+                <div class="import_token_section">
+                    <div class="field">
+                        <input
+                            type="text"
+                            class="input-field"
+                            placeholder="Token Contract Address"
+                            id="token_address"
+                        />
+                    </div>
 
-              <input
-                type="text"
-                class="input-field"
-                placeholder="token symbol"
-                id="token_symbol"
-              />
-            </div>
+                    <div class="field">
+                        <input
+                            type="text"
+                            class="input-field"
+                            placeholder="Token Symbol"
+                            id="token_symbol"
+                        />
+                    </div>
 
-            <button id="add_new_token" class="button3 connectWallet">
-              Import
-            </button>
-          </div>
+                    <div class="field">
+                        <input
+                            type="text"
+                            class="input-field"
+                            placeholder="Token Name"
+                            id="token_name"
+                        />
+                    </div>
+
+                    <p class="import_warning">
+                        <svg viewBox="0 0 16 16" width="16" height="16">
+                            <path d="M8 1.5l7 13H1l7-13z" fill="currentColor"/>
+                            <text x="8" y="13" text-anchor="middle" fill="#000" font-size="9">!</text>
+                        </svg>
+                        Custom tokens are imported at your own risk
+                    </p>
+
+                    <button id="add_new_token" class="button3 connectWallet">Import</button>
+                </div>
+            </div>
         </div>
 
         <!-- IMPORT ACCOUNT -->
         <div id="import_account" class="import_account">
-          <div class="form">
-            <img id="close_import_account" class="goBack" src="./assets/_back.png"
-              alt=""
-            />
-            <p id="heading">Import Account</p>
-            <div class="field">
-              <svg viewBox="0 0 16 16" fill="currentColor" height="16" width="16"xmlns="http://www.w3.org/2000/svg" class="input-icon">
-                <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"></path>
-              </svg>
-              <textarea
-                type="text"
-                class="input-field"
-                placeholder="private key"
-                id="add_account_private_key"
-                name=""
-                cols="30"
-                rows="5"
-              ></textarea>
-            </div>
+            <div class="form">
+                <div class="account_header">
+                    <img id="close_import_account" class="goBack" src="./assets/_back.png" alt=""/>
+                    <p id="heading">Import Account</p>
+                </div>
 
-            <button id="add_New_Account" class="button3 connectWallet">
-              Import
-            </button>
-            <p>Select Your Account</p>
-            <div class="accountList" id="accountList">
-              
-              <!-- <div class="lists">
-                <p>1</p>
-                <p>sdhsgsdhsds8343433...</p>
-              </div> -->
+                <!-- Import Account Section -->
+                <div class="import_section">
+                    <div class="field">
+                        <textarea
+                            type="text"
+                            class="input-field"
+                            placeholder="Enter your private key"
+                            id="add_account_private_key"
+                            rows="3"
+                        ></textarea>
+                    </div>
+                    <p class="import_warning">
+                        <svg viewBox="0 0 16 16" width="16" height="16">
+                            <path d="M8 1.5l7 13H1l7-13z" fill="currentColor"/>
+                            <text x="8" y="13" text-anchor="middle" fill="#000" font-size="9">!</text>
+                        </svg>
+                        Private keys are encrypted and stored securely
+                    </p>
+                    <button id="add_New_Account" class="button3 connectWallet">Import</button>
+                </div>
             </div>
-          </div>
         </div>
 
         <!-- //MAIN BODY -->

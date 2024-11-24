@@ -171,6 +171,88 @@ document.addEventListener("DOMContentLoaded", function() {
     } else {
         console.error('Back button not found');
     }
+
+    // Fix the account button click handler
+    const accountButton = document.getElementById("openAccountImport");
+    if (accountButton) {
+        console.log('Account button found');
+        
+        // Add click handler to both the div and its child image
+        accountButton.addEventListener("click", function(e) {
+            console.log('Account button clicked');
+            e.preventDefault();
+            e.stopPropagation();
+            openImportModel();
+        });
+
+        // Also handle clicks on the image
+        const accountImage = accountButton.querySelector('.home_features_img');
+        if (accountImage) {
+            accountImage.addEventListener("click", function(e) {
+                console.log('Account image clicked');
+                e.preventDefault();
+                e.stopPropagation();
+                openImportModel();
+            });
+        }
+    } else {
+        console.error('Account button not found');
+    }
+
+    // Fix the close account import button
+    const closeAccountBtn = document.getElementById("close_import_account");
+    if (closeAccountBtn) {
+        console.log('Close account button found');
+        closeAccountBtn.addEventListener("click", function(e) {
+            console.log('Close account button clicked');
+            e.preventDefault();
+            e.stopPropagation();
+            closeImportModel();
+        });
+    } else {
+        console.error('Close account button not found');
+    }
+
+    // Fix the import token button click handler
+    const importButton = document.getElementById("open_Import");
+    if (importButton) {
+        console.log('Import button found');
+        
+        // Add click handler to both the div and its child image
+        importButton.addEventListener("click", function(e) {
+            console.log('Import button clicked');
+            e.preventDefault();
+            e.stopPropagation();
+            openImport();
+        });
+
+        // Also handle clicks on the image
+        const importImage = importButton.querySelector('.home_features_img');
+        if (importImage) {
+            importImage.addEventListener("click", function(e) {
+                console.log('Import image clicked');
+                e.preventDefault();
+                e.stopPropagation();
+                openImport();
+            });
+        }
+    } else {
+        console.error('Import button not found');
+    }
+
+    // Fix the import back button
+    const importBackBtn = document.getElementById("goBack_import");
+    if (importBackBtn) {
+        console.log('Import back button found');
+        importBackBtn.addEventListener("click", function(e) {
+            console.log('Import back button clicked');
+            e.preventDefault();
+            e.stopPropagation();
+            importGoBack();
+        });
+    } else {
+        console.error('Import back button not found');
+    }
 });
 
 // Keep all your existing code below this point
@@ -627,14 +709,32 @@ function goBack() {
 //_______________________________________________________________________________________________________________________________________  
 function openImport() 
 {
-    document.getElementById("import_token").style.display = "block";
-    document.getElementById("home").style.display = "none";
+    console.log('openImport called');
+    const importToken = document.getElementById("import_token");
+    const home = document.getElementById("home");
+    
+    if (importToken && home) {
+        console.log('Showing import token, hiding home');
+        importToken.style.display = "block";
+        home.style.display = "none";
+    } else {
+        console.error('Import token or home element not found');
+    }
 }
 //_______________________________________________________________________________________________________________________________________  
 function importGoBack() 
 {
-    document.getElementById("import_token").style.display = "none";
-    document.getElementById("home").style.display = "block";
+    console.log('importGoBack called');
+    const importToken = document.getElementById("import_token");
+    const home = document.getElementById("home");
+    
+    if (importToken && home) {
+        console.log('Hiding import token, showing home');
+        importToken.style.display = "none";
+        home.style.display = "block";
+    } else {
+        console.error('Import token or home element not found');
+    }
 }
 //_______________________________________________________________________________________________________________________________________  
 function openActivity() 
@@ -657,14 +757,32 @@ function goHomePage()
 //_______________________________________________________________________________________________________________________________________  
 function openImportModel() 
 {
-    document.getElementById("import_account").style.display = "block";
-    document.getElementById("home").style.display = "none";
+    console.log('openImportModel called');
+    const importAccount = document.getElementById("import_account");
+    const home = document.getElementById("home");
+    
+    if (importAccount && home) {
+        console.log('Showing import account, hiding home');
+        importAccount.style.display = "block";
+        home.style.display = "none";
+    } else {
+        console.error('Import account or home element not found');
+    }
 }
 //_______________________________________________________________________________________________________________________________________
 function closeImportModel() 
 {
-    document.getElementById("import_account").style.display = "none";
-    document.getElementById("home").style.display = "block";
+    console.log('closeImportModel called');
+    const importAccount = document.getElementById("import_account");
+    const home = document.getElementById("home");
+    
+    if (importAccount && home) {
+        console.log('Hiding import account, showing home');
+        importAccount.style.display = "none";
+        home.style.display = "block";
+    } else {
+        console.error('Import account or home element not found');
+    }
 }
 //_______________________________________________________________________________________________________________________________________
 function addToken() 
