@@ -310,86 +310,55 @@
           </p>
         </div>
 
-        <!-- //TRANSFER COMPONENT -->
+        <!-- TRANSFER COMPONENT -->
         <div id="transfer_form" class="transfer_form">
-          <div class="form">
-            <img
-              id="goBack"
-              class="goBack"
-              src="./assets/_back.png"
-              alt=""
-            />
-            <p id="heading">Transfer Funds</p>
-            <div class="field">
-              <svg
-                viewBox="0 0 16 16"
-                fill="currentColor"
-                height="16"
-                width="16"
-                xmlns="http://www.w3.org/2000/svg"
-                class="input-icon"
-              >
-                <path
-                  d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"
-                ></path>
-              </svg>
-              <input
-                type="number"
-                class="input-field"
-                placeholder="amount"
-                id="amount"
-              />
+            <div class="form">
+                <img id="goBack" class="goBack" src="./assets/_back.png" alt=""/>
+                <p id="heading">Send</p>
+                
+                <!-- Add token selector -->
+                <div class="token_selector" id="token_selector">
+                    <div class="selected_token">
+                        <img class="token_icon" src="./assets/metaschool_icon.png" alt=""/>
+                        <span class="token_symbol">Select token</span>
+                        <svg class="dropdown_arrow" width="12" height="12" viewBox="0 0 12 12">
+                            <path d="M6 8L2 4h8l-4 4z" fill="currentColor"/>
+                        </svg>
+                    </div>
+                    <div class="token_list" id="token_list">
+                        <!-- Native token will be first -->
+                        <div class="token_item native_token">
+                            <img class="token_icon" src="./assets/metaschool_icon.png" alt=""/>
+                            <div class="token_info">
+                                <span class="token_symbol">ETH</span>
+                                <span class="token_balance">0.0 ETH</span>
+                            </div>
+                        </div>
+                        <!-- Other tokens will be added here dynamically -->
+                    </div>
+                </div>
+
+                <div class="field amount_field">
+                    <input type="number" class="input-field" placeholder="Amount" id="amount"/>
+                    <span class="max_button">MAX</span>
+                </div>
+
+                <div class="field">
+                    <input type="text" class="input-field" placeholder="Recipient address" id="address"/>
+                </div>
+
+                <div id="transfer_center" class="center">
+                    <div class="loader">
+                        <!-- ... loader divs ... -->
+                    </div>
+                </div>
+
+                <small>
+                    <a target="_blank" id="link">Check Your Transaction</a>
+                </small>
+
+                <button id="transferFund" class="button3 connectWallet">Send</button>
             </div>
-            <p class="space"></p>
-            <div class="field">
-              <svg
-                viewBox="0 0 16 16"
-                fill="currentColor"
-                height="16"
-                width="16"
-                xmlns="http://www.w3.org/2000/svg"
-                class="input-icon"
-              >
-                <path
-                  d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"
-                ></path>
-              </svg>
-
-              <input
-                type="text"
-                class="input-field"
-                placeholder="Transfer address"
-                id="address"
-              />
-            </div>
-
-            <div id="transfer_center" class="center">
-              <div class="loader">
-                <div class="bar1"></div>
-                <div class="bar2"></div>
-                <div class="bar3"></div>
-                <div class="bar4"></div>
-                <div class="bar5"></div>
-                <div class="bar6"></div>
-                <div class="bar7"></div>
-                <div class="bar8"></div>
-                <div class="bar9"></div>
-                <div class="bar10"></div>
-                <div class="bar11"></div>
-                <div class="bar12"></div>
-              </div>
-            </div>
-
-            <small>
-              <a target="_blank" id="link" href="">
-                Check Your Transaction
-              </a></small
-            >
-
-            <button id="transferFund" class="button3 connectWallet">
-              Transfer
-            </button>
-          </div>
         </div>
 
         <!-- //IMPORT COMPONENT -->

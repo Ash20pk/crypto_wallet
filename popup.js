@@ -598,6 +598,9 @@ function openTransfer()
         console.log('Showing transfer form, hiding home');
         transferForm.style.display = "block";
         home.style.display = "none";
+        
+        // Initialize token selector when opening transfer form
+        initializeTokenSelector();
     } else {
         console.error('Transfer form or home element not found');
     }
@@ -980,3 +983,101 @@ document.querySelectorAll('.home_tabs p').forEach(button =>
 
 //_______________________________________________________________________________________________________________________________________
   
+// Add this to your existing code
+function initializeTokenSelector() {
+    const tokenSelector = document.getElementById('token_selector');
+    const tokenList = document.getElementById('token_list');
+    const selectedToken = tokenSelector.querySelector('.selected_token');
+    
+    // Toggle token list
+    selectedToken.addEventListener('click', () => {
+        const isVisible = tokenList.style.display === 'block';
+        tokenList.style.display = isVisible ? 'none' : 'block';
+    });
+
+    // Close token list when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!tokenSelector.contains(e.target)) {
+            tokenList.style.display = 'none';
+        }
+    });
+
+    // Populate token list
+    updateTokenList();
+}
+
+async function updateTokenList() {
+    const tokenList = document.getElementById('token_list');
+    const provider = new ethers.providers.JsonRpcProvider(providerURL);
+    
+    // Get native token symbol and balance
+    let nativeSymbol = "ETH";
+    switch(providerURL) {
+        case POLYGON: nativeSymbol = "MATIC"; break;
+        case ETHEREUM: nativeSymbol = "ETH"; break;
+        case SEPOLIA_TEST: nativeSymbol = "SepoliaETH"; break;
+        case BNB_Smart_chain: nativeSymbol = "BNB"; break;
+        case POLYGON_AMOY: nativeSymbol = "MATIC"; break;
+    }
+
+    // Get native balance
+    const balance = await provider.getBalance(address);
+    const nativeBalance = ethers.utils.formatEther(balance);
+
+    // Update native token in list
+    const nativeTokenHtml = `
+        <div class="token_item native_token" data-symbol="${nativeSymbol}" data-address="native">
+            <img class="token_icon" src="./assets/metaschool_icon.png" alt=""/>
+            <div class="token_info">
+                <span class="token_symbol">${nativeSymbol}</span>
+                <span class="token_balance">${nativeBalance} ${nativeSymbol}</span>
+            </div>
+        </div>
+    `;
+
+    // Get other tokens
+    try {
+        const tokenResponse = await fetch("http://localhost:3000/api/v1/tokens/alltoken");
+        const tokenData = await tokenResponse.json();
+        const tokens = tokenData.data.tokens.filter(t => 
+            t.provider.toLowerCase() === providerURL.toLowerCase()
+        );
+
+        let tokenListHtml = nativeTokenHtml;
+        
+        for (const token of tokens) {
+            const balance = await fetchTokenBalance(token.address, address);
+            tokenListHtml += `
+                <div class="token_item" data-symbol="${token.symbol}" data-address="${token.address}">
+                    <img class="token_icon" src="./assets/metaschool_icon.png" alt=""/>
+                    <div class="token_info">
+                        <span class="token_symbol">${token.symbol}</span>
+                        <span class="token_balance">${balance} ${token.symbol}</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        tokenList.innerHTML = tokenListHtml;
+
+        // Add click handlers for token selection
+        tokenList.querySelectorAll('.token_item').forEach(item => {
+            item.addEventListener('click', () => {
+                const symbol = item.dataset.symbol;
+                const tokenAddress = item.dataset.address;
+                
+                // Update selected token display
+                const selectedToken = document.querySelector('.selected_token');
+                selectedToken.innerHTML = item.innerHTML;
+                selectedToken.dataset.symbol = symbol;
+                selectedToken.dataset.address = tokenAddress;
+                
+                tokenList.style.display = 'none';
+            });
+        });
+
+    } catch (error) {
+        console.error('Error updating token list:', error);
+    }
+}
+
