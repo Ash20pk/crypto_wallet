@@ -888,10 +888,6 @@ textarea {
   cursor: pointer; /* Ensures the cursor appears as a pointer when hovering over the feature items */
 }
 
-
-
-
-
 .home_header_img {
   margin-top: 1rem;
   width: 50px;
@@ -916,9 +912,113 @@ textarea {
 }
 
 .home_tabs {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  margin-top: 1rem;
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  margin: 1rem -1rem;
+  border-bottom: 1px solid rgba(39, 193, 5, 0.1);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.home_tabs p {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin: 0;
+  position: relative;
+}
+
+.home_tabs p.active {
+  color: var(--primary);
+  background: rgba(39, 193, 5, 0.1);
+  font-weight: 600;
+}
+
+.home_tabs p.active::after {
+  content: '';
+  position: absolute;
+  bottom: -0.5rem;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--primary);
+  border-radius: 1px;
+}
+
+/* Content Area Styles */
+.tab_content {
+  padding: 1rem 0;
+}
+
+.assets {
+  display: none;
+}
+
+.activity {
+  display: none;
+}
+
+/* Show active tab */
+.assets.active,
+.activity.active {
+  display: block;
+  animation: fadeIn 0.3s ease;
+}
+
+/* Tab button styles */
+.home_tabs p {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin: 0;
+  position: relative;
+}
+
+.home_tabs p.active {
+  color: var(--primary);
+  background: rgba(39, 193, 5, 0.1);
+  font-weight: 600;
+}
+
+.home_tabs p.active::after {
+  content: '';
+  position: absolute;
+  bottom: -0.5rem;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--primary);
+  border-radius: 1px;
+}
+
+/* Empty State Styles */
+.empty_state {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: var(--text-secondary);
+}
+
+.empty_state svg {
+  width: 48px;
+  height: 48px;
+  margin-bottom: 1rem;
+  color: rgba(39, 193, 5, 0.3);
+}
+
+.empty_state p {
+  font-size: 0.9rem;
+  margin: 0;
+  color: var(--text-secondary);
 }
 
 /* //ASSETS */
@@ -1575,3 +1675,246 @@ body {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(39, 193, 5, 0.2);
 }
+
+/* Tab Styles */
+.home_tabs {
+    display: flex;
+    gap: 1rem;
+    padding: 0.5rem;
+    border-bottom: 1px solid rgba(39, 193, 5, 0.1);
+    margin-bottom: 1rem;
+}
+
+.home_tabs p {
+    flex: 1;
+    padding: 0.75rem;
+    text-align: center;
+    cursor: pointer;
+    border-radius: var(--border-radius);
+    transition: all 0.3s ease;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.home_tabs p:hover {
+    color: var(--primary);
+    background: rgba(39, 193, 5, 0.05);
+}
+
+.home_tabs p.active {
+    color: var(--primary);
+    background: rgba(39, 193, 5, 0.1);
+    font-weight: 600;
+}
+
+/* Assets/Tokens Tab */
+.assets {
+    padding: 0.5rem;
+}
+
+.assets_item {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(39, 193, 5, 0.1);
+    border-radius: var(--border-radius);
+    transition: all 0.2s ease;
+}
+
+.assets_item:hover {
+    transform: translateY(-1px);
+    background: rgba(39, 193, 5, 0.05);
+}
+
+.assets_item_img {
+    width: 32px;
+    height: 32px;
+    padding: 6px;
+    border-radius: 50%;
+    background: rgba(39, 193, 5, 0.1);
+    margin-right: 1rem;
+}
+
+.assets_item .token_info {
+    flex: 1;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.assets_item .token_symbol {
+    font-weight: 500;
+    font-size: 1rem;
+    color: var(--text);
+}
+
+.assets_item .token_balance {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+/* Activity Tab */
+.activity {
+    padding: 0.5rem;
+}
+
+.activity_item {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(39, 193, 5, 0.1);
+    border-radius: var(--border-radius);
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.activity_item:hover {
+    transform: translateY(-1px);
+    background: rgba(39, 193, 5, 0.05);
+}
+
+.activity_icon {
+    width: 32px;
+    height: 32px;
+    padding: 6px;
+    border-radius: 50%;
+    margin-right: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.activity_icon.sent {
+    background: rgba(255, 71, 87, 0.1);
+    color: #ff4757;
+}
+
+.activity_icon.received {
+    background: rgba(46, 213, 115, 0.1);
+    color: #2ed573;
+}
+
+.activity_info {
+    flex: 1;
+    text-align: left;
+}
+
+.activity_type {
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: var(--text);
+    margin-bottom: 0.25rem;
+}
+
+.activity_address {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    font-family: monospace;
+}
+
+.activity_amount {
+    text-align: right;
+    font-weight: 500;
+}
+
+.activity_amount.sent {
+    color: #ff4757;
+}
+
+.activity_amount.received {
+    color: #2ed573;
+}
+
+/* Empty State Styles */
+.empty_state {
+    padding: 2rem;
+    text-align: center;
+    color: var(--text-secondary);
+}
+.empty_state svg {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 1rem;
+    color: rgba(39, 193, 5, 0.3);
+}
+
+.empty_state p {
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+/* Update menu styles */
+.header_menu {
+    position: relative;
+}
+
+.settings_menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 180px;
+    background: #151515;
+    border: 1px solid rgba(39, 193, 5, 0.2);
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.menu_item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    color: var(--text);
+    cursor: pointer;
+    border-radius: 0.375rem;
+    transition: all 0.2s ease;
+}
+
+.menu_item:hover {
+    background: rgba(39, 193, 5, 0.1);
+    color: var(--primary);
+}
+
+.menu_item svg {
+    color: var(--primary);
+}
+
+.menu_item span {
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+#settings_menu_icon {
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: background-color 0.2s;
+}
+
+#settings_menu_icon:hover {
+    background: rgba(39, 193, 5, 0.1);
+}
+
+/* Add a small arrow to the menu */
+.settings_menu::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    right: 10px;
+    width: 10px;
+    height: 10px;
+    background: #151515;
+    border-left: 1px solid rgba(39, 193, 5, 0.2);
+    border-top: 1px solid rgba(39, 193, 5, 0.2);
+    transform: rotate(45deg);
+}
+

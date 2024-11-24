@@ -1,5 +1,36 @@
 console.log('Script started'); // Debug: Check if script is loaded at all
 
+function handleTabSwitch(tabId) {
+    console.log('Switching to tab:', tabId);
+    
+    // Get the tab elements
+    const assetsTab = document.getElementById('open_assets');
+    const activityTab = document.getElementById('open_activity');
+    
+    // Get the content elements
+    const assetsContent = document.getElementById('assets');
+    const activityContent = document.getElementById('activity');
+    
+    // Remove active class from all tabs
+    document.querySelectorAll('.home_tabs p').forEach(tab => {
+        tab.classList.remove('active');
+    });
+    
+    // Hide all content sections
+    assetsContent.style.display = 'none';
+    activityContent.style.display = 'none';
+    
+    // Show the appropriate content based on which tab was clicked
+    if (tabId === 'open_assets') {
+        assetsTab.classList.add('active');
+        assetsContent.style.display = 'block';
+    } else if (tabId === 'open_activity') {
+        activityTab.classList.add('active');
+        activityContent.style.display = 'block';
+        Activity_History(); // Load activity history when switching to activity tab
+    }
+}
+
 document.addEventListener("DOMContentLoaded", function() {
     console.log('DOMContentLoaded fired'); // Debug: Check if event fires
     
@@ -14,8 +45,8 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("userAddress").addEventListener("click", copyAddress);
     document.getElementById("transferFund").addEventListener("click", handler);
     document.getElementById("header_network").addEventListener("click", getOpenNetwork);
-    
-    // ... (keep all your existing event listeners) ...
+    document.getElementById("login_up").addEventListener("click", login);
+    document.getElementById("logout").addEventListener("click", logout);
 
     // Debug: Add test click handler to document
     document.addEventListener('click', function(e) {
@@ -253,6 +284,16 @@ document.addEventListener("DOMContentLoaded", function() {
     } else {
         console.error('Import back button not found');
     }
+
+    // Set up tab click handlers
+    document.querySelectorAll('.home_tabs p').forEach(tab => {
+        tab.addEventListener('click', function() {
+            handleTabSwitch(this.id);
+        });
+    });
+
+    // Set default active tab
+    handleTabSwitch('open_assets');
 });
 
 // Keep all your existing code below this point
@@ -624,43 +665,43 @@ function signUp() {
 }
   
 function login() {
-    document.getElementById("login_form").style.display = "none";
-    document.getElementById("center").style.display = "block";
-    let email = document.getElementById("login_email").value;
-    let password = document.getElementById("login_password").value;
-  
-    //API CALL
-    let url = "http://localhost:3000/api/v1/user/login";
-    let data = {
-      email: email,
-      password: password,
-    };
-  
-    fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
+  document.getElementById("login_form").style.display = "none";
+  document.getElementById("center").style.display = "block";
+  let email = document.getElementById("login_email").value;
+  let password = document.getElementById("login_password").value;
+
+  //API CALL
+  let url = "http://localhost:3000/api/v1/user/login";
+  let data = {
+    email: email,
+    password: password,
+  };
+
+  fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+    .then((response) => response.json())
+    .then((result) => {
+      // Handle the response data
+      console.log(result.data.user);
+      let userWallet = {
+        address: result.data.user.address,
+        private_key: result.data.user.private_key,
+        mnemonic: result.data.user.mnemonic,
+      };
+      let jsonObj = JSON.stringify(userWallet);
+      localStorage.setItem("userWallet", jsonObj);
+      window.location.reload();
     })
-      .then((response) => response.json())
-      .then((result) => {
-        // Handle the response data
-        console.log(result.data.user);
-        let userWallet = {
-          address: result.data.user.address,
-          private_key: result.data.user.private_key,
-          mnemonic: result.data.user.mnemonic,
-        };
-        let jsonObj = JSON.stringify(userWallet);
-        localStorage.setItem("userWallet", jsonObj);
-        window.location.reload();
-      })
-      .catch((error) => {
-        // Handle any errors
-        console.error("Error:", error);
-      });
-    //END OF API CALL
+    .catch((error) => {
+      // Handle any errors
+      console.error("Error:", error);
+    });
+  //END OF API CALL
 }
   
 //_______________________________________________________________________________________________________________________________________
@@ -737,16 +778,12 @@ function importGoBack()
     }
 }
 //_______________________________________________________________________________________________________________________________________  
-function openActivity() 
-{
-    document.getElementById("activity").style.display = "block";
-    document.getElementById("assets").style.display = "none";
+function openActivity() {
+    handleTabSwitch('open_activity');
 }
 //_______________________________________________________________________________________________________________________________________  
-function openAssets() 
-{
-    document.getElementById("activity").style.display = "none";
-    document.getElementById("assets").style.display = "block";
+function openAssets() {
+    handleTabSwitch('open_assets');
 }
 //_______________________________________________________________________________________________________________________________________
 function goHomePage() 
