@@ -8,9 +8,6 @@
       <div class="card2">
         <!-- HEADER -->
         <div class="header">
-          <div class="header_log">
-            <img src="./assets/metaschool_icon.png" alt="theblockchaincoders"/>
-          </div>
           <div id="header_network" class="header_network">
             <p>
               <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"width="16"  zoomAndPan="magnify"  viewBox="0 0 375 374.999991" height="16"  preserveAspectRatio="xMidYMid meet"  version="1.0"  >
@@ -40,6 +37,39 @@
               </svg>
             </p>
           </div>
+          <!-- Add connection status
+          <div class="connection_status">
+            <span class="status_dot"></span>
+            <span class="status_text">Connected</span>
+          </div> -->
+          <!-- Replace settings icon with three dots menu -->
+          <div class="header_menu" id="menu_icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#27c105" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="6" r="2"></circle>
+              <circle cx="12" cy="12" r="2"></circle>
+              <circle cx="12" cy="18" r="2"></circle>
+            </svg>
+            
+            <!-- Add menu dropdown -->
+            <div class="menu_dropdown" id="menu_dropdown">
+              <div class="menu_item" id="settings_trigger">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="3"></circle>
+                  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                </svg>
+                <span>Settings</span>
+              </div>
+              <!-- Add logout button -->
+              <div class="menu_item" id="logout">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                  <polyline points="16 17 21 12 16 7"></polyline>
+                  <line x1="21" y1="12" x2="9" y2="12"></line>
+                </svg>
+                <span>Logout</span>
+              </div>
+            </div>
+          </div>
         </div>
         <!--END OF HEADER -->
 
@@ -49,6 +79,7 @@
 
         <!-- NETWORK LIST CARD -->
         <div id="network" class="network">
+          <button id="close_network" class="close_button">X</button>
           <!-- //TITLE -->
           <div class="network_title">
             <p>Networks</p>
@@ -511,10 +542,6 @@
           <h1 id="accountBlance">0.00 MATIC</h1>
 
           <div class="home_features">
-            <div class="home_feature_item">
-              <img class="home_features_img" src="./assets/buy1.png" alt="" />
-              <p class="text">Buy</p>
-            </div>
             <div class="home_feature_item" id="open_Transfer">
               <img class="home_features_img" src="./assets/send2.png" alt="" />
               <p class="text">Send</p>
@@ -536,7 +563,6 @@
 
           <div class="home_tabs">
             <p id="open_assets">Tokens</p>
-            <p id="logout">Logout</p>
             <p id="open_activity">Activity</p>
           </div>
           <p class="space"></p>

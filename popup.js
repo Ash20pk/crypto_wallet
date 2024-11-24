@@ -1,6 +1,3 @@
-
-//_______________________________________________________________________________________________________________________________________
-  
 document.addEventListener("DOMContentLoaded", function () 
 {
       // document.getElementById("accountList").addEventListener("click", changeAccount);
@@ -9,6 +6,18 @@ document.addEventListener("DOMContentLoaded", function ()
       document.getElementById("userAddress").addEventListener("click", copyAddress);
       document.getElementById("transferFund").addEventListener("click", handler);
       document.getElementById("header_network").addEventListener("click", getOpenNetwork);
+      
+      // Close button handler
+      const closeBtn = document.getElementById("close_network");
+      if (closeBtn) {
+          closeBtn.addEventListener("click", function(e) {
+              e.preventDefault();
+              e.stopPropagation();
+              document.getElementById("network").style.display = "none";
+              document.getElementById("userAddress").style.display = "block";
+          });
+      }
+      
       document.getElementById("network_item").addEventListener("click", getSelectedNetwork);
       document.getElementById("loginAccount").addEventListener("click", loginUser);
       document.getElementById("accountCreate").addEventListener("click", createUser);
@@ -25,8 +34,42 @@ document.addEventListener("DOMContentLoaded", function ()
       document.getElementById("openAccountImport").addEventListener("click", openImportModel);
       document.getElementById("close_import_account").addEventListener("click", closeImportModel);
       document.getElementById("add_new_token").addEventListener("click", addToken);
+      document.getElementById('settings_icon').addEventListener('click', function() {
+        document.getElementById('settings_window').style.display = 'block';
+      });
+      document.getElementById('settings_close').addEventListener('click', function() {
+        document.getElementById('settings_window').style.display = 'none';
+      });
       document.getElementById("add_New_Account").addEventListener("click", addAcount);
       document.getElementById("open_activity").addEventListener("click", Activity_History);
+      
+      const menuIcon = document.getElementById('menu_icon');
+      const menuDropdown = document.getElementById('menu_dropdown');
+      
+      if (menuIcon && menuDropdown) {
+          document.getElementById("menu_icon").addEventListener('click', function(e) {
+              let menuDropdown = document.getElementById("menu_dropdown");
+              if (menuDropdown.style.display === "block") {
+                  menuDropdown.style.display = "none";
+              } else {
+                  menuDropdown.style.display = "block";
+              }
+          });
+
+          // Close dropdown when clicking outside
+          document.addEventListener('click', function(e) {
+              let menuIcon = document.getElementById("menu_icon");
+              let menuDropdown = document.getElementById("menu_dropdown");
+              if (!menuIcon.contains(e.target)) {
+                  menuDropdown.style.display = "none";
+              }
+          });
+      } else {
+          console.error('Menu elements not found:', {
+              menuIcon: !!menuIcon,
+              menuDropdown: !!menuDropdown
+          });
+      }
   });
 //_______________________________________________________________________________________________________________________________________
   
@@ -51,6 +94,7 @@ document.addEventListener("DOMContentLoaded", function ()
   ];
   
   //_______________________________________________________________________________________________________________________________________
+
   
   let Activity_History = ()=>
   {
@@ -187,7 +231,7 @@ document.addEventListener("DOMContentLoaded", function ()
           {
               // console.log("sendTransaction",result);
               window.location.reload();
-          })
+          });
       });
   }
   
@@ -215,11 +259,25 @@ document.addEventListener("DOMContentLoaded", function ()
   
 //_______________________________________________________________________________________________________________________________________
 
-  function getOpenNetwork() 
-  {
-      document.getElementById("network").style.display = "block";
-      document.getElementById("userAddress").style.display = "none";
-  }
+function getOpenNetwork() 
+{
+    let networkElement = document.getElementById("network");
+    // Toggle the display
+    if (networkElement.style.display === "block") {
+        networkElement.style.display = "none";
+        document.getElementById("userAddress").style.display = "block";
+    } else {
+        networkElement.style.display = "block";
+        document.getElementById("userAddress").style.display = "none";
+    }
+}
+
+function closeNetwork(e) {
+    e.stopPropagation(); // Prevent event from bubbling up
+    let networkElement = document.getElementById("network");
+    networkElement.style.display = "none";
+    document.getElementById("userAddress").style.display = "block";
+}
 
 //_______________________________________________________________________________________________________________________________________
   

@@ -54,27 +54,36 @@ exports.signUp = async (req, res, next) =>
 };
 
 exports.login = async (req, res, next) => {
-  let { email, password } = req.body;
+  try {
+    const { email, password } = req.body;
 
-  // 1) Check if email and password exist
-  if (!email || !password) {
-    res.status(400).json({
-      status: "fail",
-      message: "Please provide email and password!",
+    // 1) Check if email and password exist
+    if (!email || !password) {
+      return res.status(400).json({
+        status: "fail",
+        message: "Please provide email and password!",
+      });
+    }
+
+    // 2) Check if user exists && password is correct
+    const user = await User.findOne({ email }).select("+password");
+
+    if (!user || !(await user.correctPassword(password, user.password))) {
+      return res.status(401).json({
+        status: "fail",
+        message: "Incorrect email or password",
+      });
+    }
+
+    // 3) If everything ok, send token to client
+    createSendToken(user, 200, req, res);
+  } catch (error) {
+    return res.status(500).json({
+      status: "error",
+      message: "An error occurred during login",
+      error: error.message
     });
   }
-  // 2) Check if user exists && password is correct
-  let user = await User.findOne({ email }).select("+password");
-
-  if (!user || !(await user.correctPassword(password, user.password))) {
-    res.status(401).json({
-      status: "fail",
-      message: "Incorrect email or password",
-    });
-  }
-
-  // 3) If everything ok, send token to client
-  createSendToken(user, 200, req, res);
 };
 
 exports.allToken = async (req, res, next) => {
