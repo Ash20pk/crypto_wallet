@@ -306,10 +306,6 @@ body {
   width: 100%;
 }
 
-.network.show {
-  display: block;
-}
-
 .network_title {
   display: flex;
   justify-content: space-between;
@@ -1142,11 +1138,18 @@ body {
   margin-left: 0.5rem;
 }
 
-#menu_icon {
+#settings_menu_icon {
   cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  transition: background-color 0.2s;
 }
 
-.menu_dropdown {
+#settings_menu_icon:hover {
+  background-color: rgba(39, 193, 5, 0.1);
+}
+
+.settings_menu {
   display: none;
   position: absolute;
   top: 100%;
@@ -1161,22 +1164,15 @@ body {
 }
 
 .menu_item {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem;
+  padding: 0.75rem 1rem;
+  color: #ffffff;
   cursor: pointer;
-  color: #fdfdfd;
-  border-radius: 0.25rem;
-  transition: background 0.2s;
+  transition: background-color 0.2s;
+  border-radius: 0.3rem;
 }
 
 .menu_item:hover {
-  background: rgba(39, 193, 5, 0.1);
-}
-
-.menu_item svg {
-  color: #27c105;
+  background-color: #27c10533;
 }
 
 .network {

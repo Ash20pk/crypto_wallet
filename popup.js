@@ -1,262 +1,321 @@
-document.addEventListener("DOMContentLoaded", function () 
-{
-      // document.getElementById("accountList").addEventListener("click", changeAccount);
-      // document.getElementById("open_activity").addEventListener("click", openActivity);
-      // document.getElementById("add_network").addEventListener("click", setNetwork);
-      document.getElementById("userAddress").addEventListener("click", copyAddress);
-      document.getElementById("transferFund").addEventListener("click", handler);
-      document.getElementById("header_network").addEventListener("click", getOpenNetwork);
-      
-      // Close button handler
-      const closeBtn = document.getElementById("close_network");
-      if (closeBtn) {
-          closeBtn.addEventListener("click", function(e) {
-              e.preventDefault();
-              e.stopPropagation();
-              document.getElementById("network").style.display = "none";
-              document.getElementById("userAddress").style.display = "block";
-          });
-      }
-      
-      document.getElementById("network_item").addEventListener("click", getSelectedNetwork);
-      document.getElementById("loginAccount").addEventListener("click", loginUser);
-      document.getElementById("accountCreate").addEventListener("click", createUser);
-      document.getElementById("openCreate").addEventListener("click", openCreate);
-      document.getElementById("sign_up").addEventListener("click", signUp);
-      document.getElementById("login_up").addEventListener("click", login);
-      document.getElementById("logout").addEventListener("click", logout);
-      document.getElementById("open_Transfer").addEventListener("click", openTransfer);
-      document.getElementById("goBack").addEventListener("click", goBack);
-      document.getElementById("open_Import").addEventListener("click", openImport);
-      document.getElementById("goBack_import").addEventListener("click", importGoBack);
-      document.getElementById("open_assets").addEventListener("click", openAssets);
-      document.getElementById("goHomePage").addEventListener("click", goHomePage);
-      document.getElementById("openAccountImport").addEventListener("click", openImportModel);
-      document.getElementById("close_import_account").addEventListener("click", closeImportModel);
-      document.getElementById("add_new_token").addEventListener("click", addToken);
-      document.getElementById('settings_icon').addEventListener('click', function() {
-        document.getElementById('settings_window').style.display = 'block';
-      });
-      document.getElementById('settings_close').addEventListener('click', function() {
-        document.getElementById('settings_window').style.display = 'none';
-      });
-      document.getElementById("add_New_Account").addEventListener("click", addAcount);
-      document.getElementById("open_activity").addEventListener("click", Activity_History);
-      
-      const menuIcon = document.getElementById('menu_icon');
-      const menuDropdown = document.getElementById('menu_dropdown');
-      
-      if (menuIcon && menuDropdown) {
-          document.getElementById("menu_icon").addEventListener('click', function(e) {
-              let menuDropdown = document.getElementById("menu_dropdown");
-              if (menuDropdown.style.display === "block") {
-                  menuDropdown.style.display = "none";
-              } else {
-                  menuDropdown.style.display = "block";
-              }
-          });
+console.log('Script started'); // Debug: Check if script is loaded at all
 
-          // Close dropdown when clicking outside
-          document.addEventListener('click', function(e) {
-              let menuIcon = document.getElementById("menu_icon");
-              let menuDropdown = document.getElementById("menu_dropdown");
-              if (!menuIcon.contains(e.target)) {
-                  menuDropdown.style.display = "none";
-              }
-          });
-      } else {
-          console.error('Menu elements not found:', {
-              menuIcon: !!menuIcon,
-              menuDropdown: !!menuDropdown
-          });
-      }
-  });
-//_______________________________________________________________________________________________________________________________________
-  
-  let POLYGON = "https://rpc.ankr.com/polygon";
-  let POLYGON_AMOY = "https://rpc.ankr.com/polygon_amoy";
-  let ETHEREUM = "https://rpc.ankr.com/eth";
-  let SEPOLIA_TEST = "https://rpc.ankr.com/eth_sepolia";
-  let BNB_Smart_chain = "https://rpc.ankr.com/bsc";
-  
-  let providerURL = "https://rpc.ankr.com/eth";
-  
-  let privateKey;
-  let address;
-
-  let allToken = 
-  [
-    {
-      name: "MATIC",
-      address: "0x0000000000000000000000000000000000001010",
-      symbol: "MATIC",
-    }
-  ];
-  
-  //_______________________________________________________________________________________________________________________________________
-
-  
-  let Activity_History = ()=>
-  {
-    let str = localStorage.getItem("userWallet");
-    let parsedObj = JSON.parse(str);
-    let connect_account_address = parsedObj.address;
-  
-    fetch("http://localhost:3000/api/v1/transactions/")
-    .then((response) => response.json())
-    .then((data) => 
-    {
-  
-        let transactions = data.data.Transaction_;
-  
-        if (!Array.isArray(transactions)) 
-        {
-            throw new Error("Expected an array but got: " + typeof transactions);
-        }
-  
-        let activityContainer = document.getElementById("activity");
-        activityContainer.innerHTML = ''; // Clear any existing content
-  
-
-        let filteredTransactions = transactions.filter(transaction =>    // Filter transactions by the given address
-        {  
-            return(
-                    transaction.Network.toLowerCase() == providerURL.toLowerCase() 
-                    && ( 
-                            transaction.Sender_address.toLowerCase() === address.toLowerCase() 
-                          || transaction.Receiver_address.toLowerCase() === address.toLowerCase() 
-                       )
-                  );
-        });
-        
-        filteredTransactions.forEach(transaction => // Display each transaction dynamically
-        {
-            let j =" ";
-            if     (transaction.Network == POLYGON)          {j = `https://polygonscan.com/tx/${transaction.Hash}`;}
-            else if(transaction.Network == POLYGON_AMOY)     {j = `https://amoy.polygonscan.com/tx/${transaction.Hash}`;}
-            else if(transaction.Network == ETHEREUM)         {j = `https://etherscan.io/tx/${transaction.Hash}`;}
-            else if(transaction.Network == SEPOLIA_TEST)     {j = `https://sepolia.etherscan.io//tx/${transaction.Hash}`;}
-            else if(transaction.Network == BNB_Smart_chain)  {j = `https://bscscan.com/tx/${transaction.Hash}`;}
-              
-            let transactionElement = document.createElement('div');
-            transactionElement.classList.add('assets_item');
-  
-            transactionElement.innerHTML = `
-                                              <img class="assets_item_img" src="./assets/link1.png" alt="Transaction Image" />
-                                              <span>${transaction.Sender_address.toLowerCase() === address.toLowerCase() ? "Sent" : "Received"} </span>
-                                              <span>${transaction.amount} tokens</span>
-                                          `;
-          
-            let imgElement = transactionElement.querySelector('.assets_item_img'); // Add click event to the image
-            imgElement.onclick = () => 
-            {
-                window.open(j, '_blank'); // Open the URL in a new tab
-            };
-            activityContainer.appendChild(transactionElement);
-        });
-  
-        // Handle cases where no transactions are found
-        if (filteredTransactions.length === 0) 
-        {
-            activityContainer.innerHTML = '<p>No transactions found for this address.</p>';
-        }
-        document.getElementById("activity").style.display = "block";
-        document.getElementById("assets").style.display = "none";
-
-    })
-    .catch((error) => {
-        console.error('Error fetching transactions:', error);
+document.addEventListener("DOMContentLoaded", function() {
+    console.log('DOMContentLoaded fired'); // Debug: Check if event fires
+    
+    // Debug: Log all important elements at startup
+    console.log('Initial elements check:', {
+        settingsIcon: document.getElementById('settings_menu_icon'),
+        settingsMenu: document.getElementById('settings_menu'),
+        headerMenu: document.querySelector('.header_menu')
     });
+
+    // Your existing event listeners
+    document.getElementById("userAddress").addEventListener("click", copyAddress);
+    document.getElementById("transferFund").addEventListener("click", handler);
+    document.getElementById("header_network").addEventListener("click", getOpenNetwork);
+    
+    // ... (keep all your existing event listeners) ...
+
+    // Debug: Add test click handler to document
+    document.addEventListener('click', function(e) {
+        console.log('Click detected on:', {
+            element: e.target,
+            tagName: e.target.tagName,
+            id: e.target.id,
+            parent: e.target.parentElement
+        });
+    });
+
+    // Your existing settings icon code with added debugging
+    const settingsIcon = document.getElementById('settings_menu_icon');
+    console.log('Settings icon element:', settingsIcon);
+
+    if (settingsIcon) {
+        console.log('Adding click listener to settings icon');
+        settingsIcon.addEventListener('click', function(e) {
+            console.log('Settings icon clicked!', {
+                target: e.target,
+                currentTarget: e.currentTarget
+            });
+            e.preventDefault();
+            e.stopPropagation();
+            openDropdownMenu();
+        });
+
+        // Debug: Add mouseover listener
+        settingsIcon.addEventListener('mouseover', function() {
+            console.log('Mouse over settings icon');
+        });
+    } else {
+        console.error('Settings icon not found');
+    }
+
+    // Your existing document click handler with debug
+    document.addEventListener('click', function(e) {
+        const menu = document.getElementById('settings_menu');
+        const icon = document.getElementById('settings_menu_icon');
+        console.log('Document click:', {
+            target: e.target,
+            menuContains: menu ? menu.contains(e.target) : false,
+            iconContains: icon ? icon.contains(e.target) : false
+        });
+        if (!menu.contains(e.target) && !icon.contains(e.target)) {
+            menu.style.display = 'none';
+        }
+    });
+
+    // Your existing openDropdownMenu function with debug
+    function openDropdownMenu() {
+        console.log('openDropdownMenu called');
+        const menuElement = document.getElementById("settings_menu");
+        console.log('Menu element:', menuElement);
+        console.log('Current display:', menuElement.style.display);
+        
+        if (menuElement.style.display === "block") {
+            menuElement.style.display = "none";
+        } else {
+            menuElement.style.display = "block";
+        }
+        console.log('New display:', menuElement.style.display);
+    }
+
+    // Fix the close button handler
+    const closeBtn = document.getElementById("close_network");
+    if (closeBtn) {
+        console.log('Close button found, adding listener');
+        closeBtn.addEventListener("click", function(e) {
+            console.log('Close button clicked');
+            e.preventDefault();
+            e.stopPropagation();
+            
+            // Directly manipulate the display properties
+            document.getElementById("network").style.display = "none";
+            document.getElementById("userAddress").style.display = "block";
+            
+            console.log('Network display:', document.getElementById("network").style.display);
+            console.log('UserAddress display:', document.getElementById("userAddress").style.display);
+        });
+    } else {
+        console.error('Close button not found');
+    }
+
+    // Update network item click handler
+    const networkList = document.getElementById("network_item");
+    if (networkList) {
+        console.log('Network list found, adding listeners');
+        networkList.addEventListener("click", function(e) {
+            console.log('Network item clicked:', e.target);
+            
+            // Find the closest network_item parent or the element itself
+            const networkItem = e.target.closest('.network_item') || e.target;
+            
+            // Get the span text regardless of what was clicked
+            const span = networkItem.querySelector('span');
+            if (span) {
+                console.log('Network text found:', span.textContent);
+                
+                // Create a new event with the correct target
+                const newEvent = {
+                    target: networkItem,
+                    preventDefault: () => {},
+                    stopPropagation: () => {}
+                };
+                
+                getSelectedNetwork(newEvent);
+            } else {
+                console.log('No span found in network item');
+            }
+        });
+    } else {
+        console.error('Network list not found');
+    }
+});
+
+// Keep all your existing code below this point
+let POLYGON = "https://rpc.ankr.com/polygon";
+let POLYGON_AMOY = "https://rpc.ankr.com/polygon_amoy";
+let ETHEREUM = "https://rpc.ankr.com/eth";
+let SEPOLIA_TEST = "https://rpc.ankr.com/eth_sepolia";
+let BNB_Smart_chain = "https://rpc.ankr.com/bsc";
+
+let providerURL = "https://rpc.ankr.com/eth";
+
+let privateKey;
+let address;
+
+let allToken = 
+[
+  {
+    name: "MATIC",
+    address: "0x0000000000000000000000000000000000001010",
+    symbol: "MATIC",
   }
-  
+];
+
 //_______________________________________________________________________________________________________________________________________
 
-  function handler() 
+let Activity_History = ()=>
+{
+  let str = localStorage.getItem("userWallet");
+  let parsedObj = JSON.parse(str);
+  let connect_account_address = parsedObj.address;
+
+  fetch("http://localhost:3000/api/v1/transactions/")
+  .then((response) => response.json())
+  .then((data) => 
   {
-      document.getElementById("transfer_center").style.display = "flex";
-    
-      let amount = document.getElementById("amount").value;
-      let address = document.getElementById("address").value;
-      let provider = new ethers.providers.JsonRpcProvider(providerURL);
-    
-      // console.log("privateKey= ",privateKey);
-      let wallet = new ethers.Wallet(privateKey, provider);
-    
-      let tx = 
+
+      let transactions = data.data.Transaction_;
+
+      if (!Array.isArray(transactions)) 
       {
-        to: address,
-        value: ethers.utils.parseEther(amount),
-        gasLimit: ethers.utils.hexlify(21000), 
-      };
-    
-      var a = document.getElementById("link");
-      a.href = "somelink url";
-    
-      wallet.sendTransaction(tx).then((txObj) => 
+          throw new Error("Expected an array but got: " + typeof transactions);
+      }
+
+      let activityContainer = document.getElementById("activity");
+      activityContainer.innerHTML = ''; // Clear any existing content
+
+
+      let filteredTransactions = transactions.filter(transaction =>    // Filter transactions by the given address
+      {  
+          return(
+                  transaction.Network.toLowerCase() == providerURL.toLowerCase() 
+                  && ( 
+                          transaction.Sender_address.toLowerCase() === address.toLowerCase() 
+                        || transaction.Receiver_address.toLowerCase() === address.toLowerCase() 
+                       )
+                    );
+      });
+      
+      filteredTransactions.forEach(transaction => // Display each transaction dynamically
       {
-          // console.log("txHash", txObj.hash);
-          document.getElementById("transfer_center").style.display = "none";
-          let a = document.getElementById("link");
-      
-          if     (providerURL == POLYGON)          {a.href = `https://polygonscan.com/tx/${txObj.hash}`;}
-          else if(providerURL == POLYGON_AMOY)     {a.href = `https://amoy.polygonscan.com/tx/${txObj.hash}`;}
-          else if(providerURL == ETHEREUM)         {a.href = `https://etherscan.io/tx/${txObj.hash}`;}
-          else if(providerURL == SEPOLIA_TEST)     {a.href = `https://sepolia.etherscan.io/tx/${txObj.hash}`;}
-          else if(providerURL == BNB_Smart_chain)  {a.href = `https://bscscan.com/tx${txObj.hash}`;}
-      
-          document.getElementById("link").style.display = "block";
-      
-          let url = "http://localhost:3000/api/v1/transactions/log";
-          // console.log("providerurl==",providerURL)
-          let data = 
+          let j =" ";
+          if     (transaction.Network == POLYGON)          {j = `https://polygonscan.com/tx/${transaction.Hash}`;}
+          else if(transaction.Network == POLYGON_AMOY)     {j = `https://amoy.polygonscan.com/tx/${transaction.Hash}`;}
+          else if(transaction.Network == ETHEREUM)         {j = `https://etherscan.io/tx/${transaction.Hash}`;}
+          else if(transaction.Network == SEPOLIA_TEST)     {j = `https://sepolia.etherscan.io//tx/${transaction.Hash}`;}
+          else if(transaction.Network == BNB_Smart_chain)  {j = `https://bscscan.com/tx/${transaction.Hash}`;}
+            
+          let transactionElement = document.createElement('div');
+          transactionElement.classList.add('assets_item');
+
+          transactionElement.innerHTML = `
+                                            <img class="assets_item_img" src="./assets/link1.png" alt="Transaction Image" />
+                                            <span>${transaction.Sender_address.toLowerCase() === address.toLowerCase() ? "Sent" : "Received"} </span>
+                                            <span>${transaction.amount} tokens</span>
+                                        `;
+        
+          let imgElement = transactionElement.querySelector('.assets_item_img'); // Add click event to the image
+          imgElement.onclick = () => 
           {
-              Sender_address   : wallet.address,
-              Receiver_address : address,
-              amount           : amount ,
-              Network          : providerURL,
-              Hash             : txObj.hash
+              window.open(j, '_blank'); // Open the URL in a new tab
           };
-          // console.log("amount type=",typeof(amount));
-          // console.log("data=",data,)
-          // console.log(providerURL);
-      
-          fetch(url, 
-          {
-              method: "POST",
-              headers: {"Content-Type": "application/json",},
-              body: JSON.stringify(data),
-          })
-          .then((response) => response.json())
-          .then((result) => 
-          {
-              // console.log("sendTransaction",result);
-              window.location.reload();
-          });
+          activityContainer.appendChild(transactionElement);
       });
-  }
-  
+
+      // Handle cases where no transactions are found
+      if (filteredTransactions.length === 0) 
+      {
+          activityContainer.innerHTML = '<p>No transactions found for this address.</p>';
+      }
+      document.getElementById("activity").style.display = "block";
+      document.getElementById("assets").style.display = "none";
+
+  })
+  .catch((error) => {
+      console.error('Error fetching transactions:', error);
+  });
+}
+
 //_______________________________________________________________________________________________________________________________________
 
-  function checkBlance(address) 
-  {
-      let provider = new ethers.providers.JsonRpcProvider(providerURL);
-      provider.getBalance(address).then((balance) => 
-      {
-          let balanceInEth = ethers.utils.formatEther(balance);
+function handler() 
+{
+    document.getElementById("transfer_center").style.display = "flex";
   
-          let symbol = "symbol";
-          if     (providerURL == POLYGON)               {symbol = "POL";}
-          else if(providerURL == POLYGON_AMOY)          {symbol = "POL";}
-          else if(providerURL == ETHEREUM)              {symbol = "ETH";}
-          else if(providerURL == SEPOLIA_TEST)          {symbol = "SepoliaETH";}
-          else if(providerURL == BNB_Smart_chain)       {symbol = "BNB";}
-          else                                          {symbol = "symbol";}
+    let amount = document.getElementById("amount").value;
+    let address = document.getElementById("address").value;
+    let provider = new ethers.providers.JsonRpcProvider(providerURL);
   
-          document.getElementById("accountBlance").innerHTML = `${balanceInEth} ${symbol}`;
-          document.getElementById("userAddress").innerHTML = `${address.slice(0,6)}...${address.slice(36,42)}`;
-      });
-  }
+    // console.log("privateKey= ",privateKey);
+    let wallet = new ethers.Wallet(privateKey, provider);
   
+    let tx = 
+    {
+      to: address,
+      value: ethers.utils.parseEther(amount),
+      gasLimit: ethers.utils.hexlify(21000), 
+    };
+  
+    var a = document.getElementById("link");
+    a.href = "somelink url";
+  
+    wallet.sendTransaction(tx).then((txObj) => 
+    {
+        // console.log("txHash", txObj.hash);
+        document.getElementById("transfer_center").style.display = "none";
+        let a = document.getElementById("link");
+    
+        if     (providerURL == POLYGON)          {a.href = `https://polygonscan.com/tx/${txObj.hash}`;}
+        else if(providerURL == POLYGON_AMOY)     {a.href = `https://amoy.polygonscan.com/tx/${txObj.hash}`;}
+        else if(providerURL == ETHEREUM)         {a.href = `https://etherscan.io/tx/${txObj.hash}`;}
+        else if(providerURL == SEPOLIA_TEST)     {a.href = `https://sepolia.etherscan.io/tx/${txObj.hash}`;}
+        else if(providerURL == BNB_Smart_chain)  {a.href = `https://bscscan.com/tx${txObj.hash}`;}
+    
+        document.getElementById("link").style.display = "block";
+    
+        let url = "http://localhost:3000/api/v1/transactions/log";
+        // console.log("providerurl==",providerURL)
+        let data = 
+        {
+            Sender_address   : wallet.address,
+            Receiver_address : address,
+            amount           : amount ,
+            Network          : providerURL,
+            Hash             : txObj.hash
+        };
+        // console.log("amount type=",typeof(amount));
+        // console.log("data=",data,)
+        // console.log(providerURL);
+    
+        fetch(url, 
+        {
+            method: "POST",
+            headers: {"Content-Type": "application/json",},
+            body: JSON.stringify(data),
+        })
+        .then((response) => response.json())
+        .then((result) => 
+        {
+            // console.log("sendTransaction",result);
+            window.location.reload();
+        });
+    });
+}
+
+//_______________________________________________________________________________________________________________________________________
+
+function checkBlance(address) 
+{
+    let provider = new ethers.providers.JsonRpcProvider(providerURL);
+    provider.getBalance(address).then((balance) => 
+    {
+        let balanceInEth = ethers.utils.formatEther(balance);
+  
+        let symbol = "symbol";
+        if     (providerURL == POLYGON)               {symbol = "POL";}
+        else if(providerURL == POLYGON_AMOY)          {symbol = "POL";}
+        else if(providerURL == ETHEREUM)              {symbol = "ETH";}
+        else if(providerURL == SEPOLIA_TEST)          {symbol = "SepoliaETH";}
+        else if(providerURL == BNB_Smart_chain)       {symbol = "BNB";}
+        else                                          {symbol = "symbol";}
+  
+        document.getElementById("accountBlance").innerHTML = `${balanceInEth} ${symbol}`;
+        document.getElementById("userAddress").innerHTML = `${address.slice(0,6)}...${address.slice(36,42)}`;
+    });
+}
+
 //_______________________________________________________________________________________________________________________________________
 
 function getOpenNetwork() 
@@ -272,83 +331,110 @@ function getOpenNetwork()
     }
 }
 
-function closeNetwork(e) {
-    e.stopPropagation(); // Prevent event from bubbling up
-    let networkElement = document.getElementById("network");
-    networkElement.style.display = "none";
-    document.getElementById("userAddress").style.display = "block";
+function openDropdownMenu() 
+{
+    let menuElement = document.getElementById("settings_menu");
+    // Toggle the display
+    if (menuElement.style.display === "block") {
+        menuElement.style.display = "none";
+    } else {
+        menuElement.style.display = "block";
+    }
 }
 
 //_______________________________________________________________________________________________________________________________________
   
-  function getSelectedNetwork(e) 
-  {
-      let element = document.getElementById("selected_network") || "Ethereum Mainnet";
-      element.innerHTML = e.target.innerHTML;
-      // console.log("e.target.innerHTML",e.target.innerHTML)
+function getSelectedNetwork(e) {
+    console.log('getSelectedNetwork called', e.target);
     
-      if (e.target.innerHTML === "Ethereum Mainnet") 
-      {
-          providerURL = ETHEREUM;
-          localStorage.setItem("ACTIVE_NETWORK", "Ethereum Mainnet");
-          document.getElementById("network").style.display = "none";
-      } 
+    // Get the network item text, handling clicks on either the p element or its children
+    let networkText;
+    const targetElement = e.target;
     
-      else if (e.target.innerHTML === "Polygon Mainnet") 
-      {
-          providerURL = POLYGON;
-          localStorage.setItem("ACTIVE_NETWORK", "Polygon Mainnet");
-          document.getElementById("network").style.display = "none";
-      } 
+    // Try to find the text content in this order:
+    // 1. Direct span content
+    // 2. Parent network_item's span content
+    // 3. Direct text content if it's a span
+    const span = targetElement.querySelector('span') || 
+                targetElement.closest('.network_item')?.querySelector('span') ||
+                (targetElement.tagName === 'SPAN' ? targetElement : null);
+
+    if (span) {
+        networkText = span.textContent.trim();
+        console.log('Found network text:', networkText);
+    } else {
+        console.log('No network text found');
+        return;
+    }
+
+    let element = document.getElementById("selected_network");
+    if (element) {
+        element.innerHTML = networkText;
+    }
+
+    // Update provider URL based on selection
+    switch (networkText) {
+        case "Ethereum Mainnet":
+            providerURL = ETHEREUM;
+            localStorage.setItem("ACTIVE_NETWORK", "Ethereum Mainnet");
+            break;
+        case "Polygon Mainnet":
+            providerURL = POLYGON;
+            localStorage.setItem("ACTIVE_NETWORK", "Polygon Mainnet");
+            break;
+        case "Polygon Amoy":
+            providerURL = POLYGON_AMOY;
+            localStorage.setItem("ACTIVE_NETWORK", "Polygon Amoy");
+            break;
+        case "Sepolia test network":
+            providerURL = SEPOLIA_TEST;
+            localStorage.setItem("ACTIVE_NETWORK", "Sepolia test network");
+            break;
+        case "BNB Smart Chain":
+            providerURL = BNB_Smart_chain;
+            localStorage.setItem("ACTIVE_NETWORK", "BNB Smart Chain");
+            break;
+        default:
+            console.log('Unknown network:', networkText);
+            return;
+    }
+
+    // Hide network selector and show address
+    const networkElement = document.getElementById("network");
+    const userAddressElement = document.getElementById("userAddress");
     
-      else if (e.target.innerHTML === "Polygon Amoy") 
-      {
-          providerURL = POLYGON_AMOY;
-          localStorage.setItem("ACTIVE_NETWORK", "Polygon Amoy");
-          document.getElementById("network").style.display = "none";
-      } 
+    if (networkElement) networkElement.style.display = "none";
+    if (userAddressElement) userAddressElement.style.display = "block";
+
+    // Update balance
+    let str = localStorage.getItem("userWallet");
+    let parsedObj = JSON.parse(str);
+    if (parsedObj?.address) {
+        checkBlance(parsedObj.address);
+    }
     
-      else if (e.target.innerHTML === "Sepolia test network") 
-      {
-          providerURL = SEPOLIA_TEST;
-          localStorage.setItem("ACTIVE_NETWORK", "Sepolia test network");
-          document.getElementById("network").style.display = "none";
-      }
-    
-      else if (e.target.innerHTML === "BNB Smart Chain") 
-      {
-          providerURL = BNB_Smart_chain;
-          localStorage.setItem("ACTIVE_NETWORK", "BNB Smart Chain");
-          document.getElementById("network").style.display = "none";
-      }
-  
-      // console.log(providerURL);
-      let str = localStorage.getItem("userWallet");
-      let parsedObj = JSON.parse(str);
-      checkBlance(parsedObj.address)
-      document.getElementById("userAddress").style.display = "block";
-      myFunction();
-  }
+    myFunction();
+}
   
 
 //_______________________________________________________________________________________________________________________________________
     
-  function loginUser() {
+function loginUser() {
     document.getElementById("createAccount").style.display = "none";
     document.getElementById("LoginUser").style.display = "block";
-  }
+}
   
-  function createUser() {
+function createUser() {
     document.getElementById("createAccount").style.display = "block";
     document.getElementById("LoginUser").style.display = "none";
-  }
+}
   
-  function openCreate() {
+function openCreate() {
     document.getElementById("createAccount").style.display = "none";
     document.getElementById("create_popUp").style.display = "block";
-  }
+}
   
-  function signUp() {
+function signUp() {
     let name = document.getElementById("sign_up_name").value;
     let email = document.getElementById("sign_up_email").value;
     let password = document.getElementById("sign_up_password").value;
@@ -412,9 +498,9 @@ function closeNetwork(e) {
         });
       //END OF API CALL
     }
-  }
+}
   
-  function login() {
+function login() {
     document.getElementById("login_form").style.display = "none";
     document.getElementById("center").style.display = "block";
     let email = document.getElementById("login_email").value;
@@ -452,381 +538,381 @@ function closeNetwork(e) {
         console.error("Error:", error);
       });
     //END OF API CALL
-  }
+}
   
 //_______________________________________________________________________________________________________________________________________
-  function logout() 
-  {
-      localStorage.removeItem("userWallet");
-      window.location.reload();
-  }
+function logout() 
+{
+    localStorage.removeItem("userWallet");
+    window.location.reload();
+}
 //_______________________________________________________________________________________________________________________________________  
-  function openTransfer() 
-  {
-      document.getElementById("transfer_form").style.display = "block";
-      document.getElementById("home").style.display = "none";
-  }
+function openTransfer() 
+{
+    document.getElementById("transfer_form").style.display = "block";
+    document.getElementById("home").style.display = "none";
+}
 //_______________________________________________________________________________________________________________________________________  
-  function goBack() 
-  {
-      document.getElementById("transfer_form").style.display = "none";
-      document.getElementById("home").style.display = "block";
-  }
+function goBack() 
+{
+    document.getElementById("transfer_form").style.display = "none";
+    document.getElementById("home").style.display = "block";
+}
 //_______________________________________________________________________________________________________________________________________  
-  function openImport() 
-  {
-      document.getElementById("import_token").style.display = "block";
-      document.getElementById("home").style.display = "none";
-  }
+function openImport() 
+{
+    document.getElementById("import_token").style.display = "block";
+    document.getElementById("home").style.display = "none";
+}
 //_______________________________________________________________________________________________________________________________________  
-  function importGoBack() 
-  {
-      document.getElementById("import_token").style.display = "none";
-      document.getElementById("home").style.display = "block";
-  }
+function importGoBack() 
+{
+    document.getElementById("import_token").style.display = "none";
+    document.getElementById("home").style.display = "block";
+}
 //_______________________________________________________________________________________________________________________________________  
-  function openActivity() 
-  {
-      document.getElementById("activity").style.display = "block";
-      document.getElementById("assets").style.display = "none";
-  }
+function openActivity() 
+{
+    document.getElementById("activity").style.display = "block";
+    document.getElementById("assets").style.display = "none";
+}
 //_______________________________________________________________________________________________________________________________________  
-  function openAssets() 
-  {
-      document.getElementById("activity").style.display = "none";
-      document.getElementById("assets").style.display = "block";
-  }
+function openAssets() 
+{
+    document.getElementById("activity").style.display = "none";
+    document.getElementById("assets").style.display = "block";
+}
 //_______________________________________________________________________________________________________________________________________
-  function goHomePage() 
-  {
-      document.getElementById("create_popUp").style.display = "none";
-      document.getElementById("home").style.display = "block";
-  }
+function goHomePage() 
+{
+    document.getElementById("create_popUp").style.display = "none";
+    document.getElementById("home").style.display = "block";
+}
 //_______________________________________________________________________________________________________________________________________  
-  function openImportModel() 
-  {
-      document.getElementById("import_account").style.display = "block";
-      document.getElementById("home").style.display = "none";
-  }
+function openImportModel() 
+{
+    document.getElementById("import_account").style.display = "block";
+    document.getElementById("home").style.display = "none";
+}
 //_______________________________________________________________________________________________________________________________________
-  function closeImportModel() 
-  {
-      document.getElementById("import_account").style.display = "none";
-      document.getElementById("home").style.display = "block";
-  }
+function closeImportModel() 
+{
+    document.getElementById("import_account").style.display = "none";
+    document.getElementById("home").style.display = "block";
+}
 //_______________________________________________________________________________________________________________________________________
-  function addToken() 
+function addToken() 
+{
+  let address = document.getElementById("token_address").value;
+  let name = document.getElementById("token_name").value;
+  let symbol = document.getElementById("token_symbol").value;
+  let str = localStorage.getItem("userWallet");
+  let parsedObj = JSON.parse(str);
+  
+  let url = "http://localhost:3000/api/v1/tokens/createtoken";
+  let data = 
   {
-    let address = document.getElementById("token_address").value;
-    let name = document.getElementById("token_name").value;
-    let symbol = document.getElementById("token_symbol").value;
-    let str = localStorage.getItem("userWallet");
-    let parsedObj = JSON.parse(str);
-    
-    let url = "http://localhost:3000/api/v1/tokens/createtoken";
+    name              : name,
+    address           : address,
+    symbol            : symbol,
+    provider          :providerURL,
+    connected_account :parsedObj.address
+  };
+
+  fetch(url, 
+  {
+      method: "POST",
+      headers:{"Content-Type": "application/json"},
+      body: JSON.stringify(data),
+  })
+  .then((response) => response.json())
+  .then((result) => 
+  {
+        // Handle the response data
+        console.log(result.data.createToken);
+        window.location.reload();
+  })
+  .catch((error) => 
+    {
+        console.error("Error:", error);
+    });
+  //END OF API CALL
+}
+
+//_______________________________________________________________________________________________________________________________________
+  
+function addAcount() 
+{
+    let privateKey = document.getElementById("add_account_private_key").value;
+    let provider = new ethers.providers.JsonRpcProvider(providerURL);
+    let wallet = new ethers.Wallet(privateKey, provider);
+    // console.log(wallet.address);
+  
+    //API CALL
+    let url = "http://localhost:3000/api/v1/account/createaccount";
     let data = 
     {
-      name              : name,
-      address           : address,
-      symbol            : symbol,
-      provider          :providerURL,
-      connected_account :parsedObj.address
+        privateKey: privateKey,
+        address   : wallet.address,
     };
   
     fetch(url, 
     {
         method: "POST",
-        headers:{"Content-Type": "application/json"},
+        headers: {"Content-Type": "application/json"},
         body: JSON.stringify(data),
     })
     .then((response) => response.json())
     .then((result) => 
     {
-          // Handle the response data
-          console.log(result.data.createToken);
-          window.location.reload();
+        console.log(result);
+        closeImportModel();
+        // window.location.reload();
     })
-    .catch((error) => 
-      {
-          console.error("Error:", error);
-      });
+    .catch((error) => {
+        // Handle any errors
+        console.error("Error:", error);
+    });
     //END OF API CALL
-  }
-
-//_______________________________________________________________________________________________________________________________________
+}
   
-  function addAcount() 
-  {
-      let privateKey = document.getElementById("add_account_private_key").value;
-      let provider = new ethers.providers.JsonRpcProvider(providerURL);
-      let wallet = new ethers.Wallet(privateKey, provider);
-      // console.log(wallet.address);
+//_______________________________________________________________________________________________________________________________________
     
-      //API CALL
-      let url = "http://localhost:3000/api/v1/account/createaccount";
-      let data = 
-      {
-          privateKey: privateKey,
-          address   : wallet.address,
-      };
+let fetchTokenBalance = async(tokenAddress,accountAddress) =>
+{
+    try 
+    {
+        let provider = new ethers.providers.JsonRpcProvider(providerURL);
+        let ERC20_ABI = 
+        [
+          "function balanceOf(address account) view returns (uint256)",
+          "function decimals() view returns (uint8)"
+        ];
+      
+        let tokenContract = new ethers.Contract(tokenAddress,ERC20_ABI ,provider);
+      
+        // Fetch the token balance
+        let balance = await tokenContract.balanceOf(accountAddress)
+        let decimals = await tokenContract.decimals();
+        let humanReadableBalance = ethers.utils.formatUnits(balance, decimals);
+      
+        // console.log(`Token Balance: ${humanReadableBalance}`);
+        return humanReadableBalance;
+    } 
+    catch (error) 
+    {
+      console.error("Error fetching token balance:", error);
+      return 0;
+    }
+}
     
-      fetch(url, 
+//_______________________________________________________________________________________________________________________________________
+    
+async function myFunction() 
+{
+    let str = localStorage.getItem("userWallet");
+    let parsedObj = JSON.parse(str);
+    // console.log(parsedObj);
+  
+    if (parsedObj?.address) 
+    {
+        document.getElementById("LoginUser").style.display = "none";
+        document.getElementById("home").style.display = "block";
+        privateKey = parsedObj.private_key;
+        address = parsedObj.address;
+        checkBlance(parsedObj.address);
+    }
+  
+    let tokenRender = document.querySelector(".assets");
+    let accountRender = document.querySelector(".accountList");
+    tokenRender.innerHTML ="";
+  
+    try 
+    {
+      // Fetch all tokens
+      let tokenResponse = await fetch("http://localhost:3000/api/v1/tokens/alltoken");
+      let tokenData = await tokenResponse.json();
+      let tokens = tokenData.data.tokens;
+  
+      if (!Array.isArray(tokens)) 
       {
-          method: "POST",
-          headers: {"Content-Type": "application/json"},
-          body: JSON.stringify(data),
-      })
-      .then((response) => response.json())
-      .then((result) => 
+          throw new Error("Expected an array but got: " + typeof tokens);
+      }
+  
+      let filteredAsset = tokens.filter(i => 
       {
-          console.log(result);
-          closeImportModel();
-          // window.location.reload();
-      })
-      .catch((error) => {
-          // Handle any errors
-          console.error("Error:", error);
+          return (i.provider.toLowerCase() == providerURL.toLowerCase() )
       });
-      //END OF API CALL
-  }
-  
-//_______________________________________________________________________________________________________________________________________
-    
-  let fetchTokenBalance = async(tokenAddress,accountAddress) =>
-  {
-      try 
-      {
-          let provider = new ethers.providers.JsonRpcProvider(providerURL);
-          let ERC20_ABI = 
-          [
-            "function balanceOf(address account) view returns (uint256)",
-            "function decimals() view returns (uint8)"
-          ];
-      
-          let tokenContract = new ethers.Contract(tokenAddress,ERC20_ABI ,provider);
-      
-          // Fetch the token balance
-          let balance = await tokenContract.balanceOf(accountAddress)
-          let decimals = await tokenContract.decimals();
-          let humanReadableBalance = ethers.utils.formatUnits(balance, decimals);
-      
-          // console.log(`Token Balance: ${humanReadableBalance}`);
-          return humanReadableBalance;
-      } 
-      catch (error) 
-      {
-        console.error("Error fetching token balance:", error);
-        return 0;
-      }
-  }
-    
-//_______________________________________________________________________________________________________________________________________
-    
-  async function myFunction() 
-  {
-      let str = localStorage.getItem("userWallet");
-      let parsedObj = JSON.parse(str);
-      // console.log(parsedObj);
-    
-      if (parsedObj?.address) 
-      {
-          document.getElementById("LoginUser").style.display = "none";
-          document.getElementById("home").style.display = "block";
-          privateKey = parsedObj.private_key;
-          address = parsedObj.address;
-          checkBlance(parsedObj.address);
-      }
-    
-      let tokenRender = document.querySelector(".assets");
-      let accountRender = document.querySelector(".accountList");
-      tokenRender.innerHTML ="";
-    
-      try 
-      {
-        // Fetch all tokens
-        let tokenResponse = await fetch("http://localhost:3000/api/v1/tokens/alltoken");
-        let tokenData = await tokenResponse.json();
-        let tokens = tokenData.data.tokens;
-    
-        if (!Array.isArray(tokens)) 
-        {
-            throw new Error("Expected an array but got: " + typeof tokens);
-        }
-    
-        let filteredAsset = tokens.filter(i => 
-        {
-            return (i.provider.toLowerCase() == providerURL.toLowerCase() )
-        });
-        // console.log("filteredAsset",filteredAsset);
+      // console.log("filteredAsset",filteredAsset);
 
-        if (filteredAsset.length == 0) 
-        {
-            console.log("No matching Assets found for this address.");
-            tokenRender.innerHTML = '<p>No Assets found for this address.</p>';
-        }
-
-        if(filteredAsset.length != 0)
-        {
-            let tokenElements = "";
-            for (let token of filteredAsset) 
-            {
-                let balance = await fetchTokenBalance(token.address, parsedObj.address); //connected_account
-                console.log("fetchTokenBalance", balance);
-          
-                tokenElements += `
-                  <div class="assets_item">
-                    <img class="assets_item_img" src="./assets/metaschool_icon.png" alt=""/>
-                    <span>${balance}</span>
-                    <span>${token.symbol}</span>
-                  </div>
-                `;
-            }
-            tokenRender.innerHTML = tokenElements;
-        }
-    
-      } 
-      catch (error) 
+      if (filteredAsset.length == 0) 
       {
-        console.error("Error fetching tokens:", error);
-      }
-  
-      try 
-      {
-        // Fetch all accounts
-        let accountResponse = await fetch("http://localhost:3000/api/v1/account/allaccount");
-        let accountData = await accountResponse.json();
-    
-        let accounts = "";
-        accountData.data.accounts.map((account, i) => 
-        {
-          accounts += `
-            <div class="lists">
-              <p>${i + 1}</p>
-              <p class="accountValue" data-address="${account.address}" data-privateKey="${account.privateKey}">
-              ${address.slice(0,6)}...${address.slice(36,42)}
-              </p>
-            </div>
-          `;
-        });
-    
-        accountRender.innerHTML = accounts;
-        
-        let accountElements = document.querySelectorAll(".lists"); // Add event listeners to each account after rendering
-        accountElements.forEach((element) => 
-        {
-            element.addEventListener("click", function () 
-            {
-              changeAccount(element);
-            });
-        });
-    
-      } 
-      catch (error) 
-      {
-        console.error("Error fetching accounts:", error);
+          console.log("No matching Assets found for this address.");
+          tokenRender.innerHTML = '<p>No Assets found for this address.</p>';
       }
 
-      // console.log(privateKey);
-  }
-  
- //_______________________________________________________________________________________________________________________________________
-   
-  function copyAddress() 
-  {
-      let tooltip = document.getElementById("userAddress");
-      //navigator.clipboard.writeText(address);
-      // Copy address to clipboard
-      navigator.clipboard.writeText(address)
-        .then(() => 
-        {
-          // Change tooltip text to "Address copied"
-          tooltip.setAttribute("data-hover-text", "Address copied");
-    
-          // Reset tooltip text to "Copy to clipboard" after 2 seconds
-          setTimeout(() => 
+      if(filteredAsset.length != 0)
+      {
+          let tokenElements = "";
+          for (let token of filteredAsset) 
           {
-            tooltip.setAttribute("data-hover-text", "Copy to clipboard");
-          }, 5000);
-        })
-        .catch((error) => 
-        {
-          console.error("Failed to copy address:", error);
-        });
-  }
+              let balance = await fetchTokenBalance(token.address, parsedObj.address); //connected_account
+              console.log("fetchTokenBalance", balance);
+        
+              tokenElements += `
+                <div class="assets_item">
+                  <img class="assets_item_img" src="./assets/metaschool_icon.png" alt=""/>
+                  <span>${balance}</span>
+                  <span>${token.symbol}</span>
+                </div>
+              `;
+          }
+          tokenRender.innerHTML = tokenElements;
+      }
   
-//_______________________________________________________________________________________________________________________________________
-  
-  function changeAccount(element) 
-  {
-      let data = element.querySelector(".accountValue");
-      let address = data.getAttribute("data-address");
-      let privateKey = data.getAttribute("data-privateKey");
-    
-      console.log(privateKey, address);
-      let userWallet = 
-      {
-        address    : address,
-        private_key: privateKey,
-        mnemonic   : "Changed",
-      };
-    
-      console.log(userWallet);
-      let jsonObj = JSON.stringify(userWallet);
-      localStorage.setItem("userWallet", jsonObj);
-      window.location.reload();
-  }
-//_______________________________________________________________________________________________________________________________________
-    
-  window.onload = myFunction;
-//_______________________________________________________________________________________________________________________________________
-    
-  document.addEventListener('DOMContentLoaded', function() 
-  {
-      let assetsButton = document.getElementById('open_assets'); // Set the "Assets" button as active by default
-      assetsButton.classList.add('active');
-      handleTabSwitch('open_assets'); // Show the "Assets" section by default
-  });
+    } 
+    catch (error) 
+    {
+      console.error("Error fetching tokens:", error);
+    }
 
-//_______________________________________________________________________________________________________________________________________
+    try 
+    {
+      // Fetch all accounts
+      let accountResponse = await fetch("http://localhost:3000/api/v1/account/allaccount");
+      let accountData = await accountResponse.json();
   
-  document.querySelectorAll('.home_tabs p').forEach(button => 
-  {
-      button.addEventListener('click', function() 
+      let accounts = "";
+      accountData.data.accounts.map((account, i) => 
       {
-          document.querySelectorAll('.home_tabs p').forEach(b => b.classList.remove('active'));// Remove 'active' class from all buttons
-          this.classList.add('active');// Add 'active' class to the clicked button
-          let id = this.id;// Now display the corresponding data (Assets, Logout, Activity)
-          handleTabSwitch(id);
+        accounts += `
+          <div class="lists">
+            <p>${i + 1}</p>
+            <p class="accountValue" data-address="${account.address}" data-privateKey="${account.privateKey}">
+            ${address.slice(0,6)}...${address.slice(36,42)}
+            </p>
+          </div>
+        `;
       });
-  });
+  
+      accountRender.innerHTML = accounts;
+      
+      let accountElements = document.querySelectorAll(".lists"); // Add event listeners to each account after rendering
+      accountElements.forEach((element) => 
+      {
+          element.addEventListener("click", function () 
+          {
+            changeAccount(element);
+          });
+      });
+  
+    } 
+    catch (error) 
+    {
+      console.error("Error fetching accounts:", error);
+    }
 
-
+    // console.log(privateKey);
+}
+  
 //_______________________________________________________________________________________________________________________________________
+  
+function copyAddress() 
+{
+    let tooltip = document.getElementById("userAddress");
+    //navigator.clipboard.writeText(address);
+    // Copy address to clipboard
+    navigator.clipboard.writeText(address)
+      .then(() => 
+      {
+        // Change tooltip text to "Address copied"
+        tooltip.setAttribute("data-hover-text", "Address copied");
     
-  // function setNetwork() { document.getElementById("network").style.display = "none";}
+        // Reset tooltip text to "Copy to clipboard" after 2 seconds
+        setTimeout(() => 
+        {
+          tooltip.setAttribute("data-hover-text", "Copy to clipboard");
+        }, 5000);
+      })
+      .catch((error) => 
+      {
+        console.error("Failed to copy address:", error);
+      });
+}
+  
+//_______________________________________________________________________________________________________________________________________
+  
+function changeAccount(element) 
+{
+    let data = element.querySelector(".accountValue");
+    let address = data.getAttribute("data-address");
+    let privateKey = data.getAttribute("data-privateKey");
+  
+    console.log(privateKey, address);
+    let userWallet = 
+    {
+      address    : address,
+      private_key: privateKey,
+      mnemonic   : "Changed",
+    };
+  
+    console.log(userWallet);
+    let jsonObj = JSON.stringify(userWallet);
+    localStorage.setItem("userWallet", jsonObj);
+    window.location.reload();
+}
+//_______________________________________________________________________________________________________________________________________
+  
+window.onload = myFunction;
+//_______________________________________________________________________________________________________________________________________
+  
+document.addEventListener('DOMContentLoaded', function() 
+{
+    let assetsButton = document.getElementById('open_assets'); // Set the "Assets" button as active by default
+    assetsButton.classList.add('active');
+    handleTabSwitch('open_assets'); // Show the "Assets" section by default
+});
+
+//_______________________________________________________________________________________________________________________________________
+  
+document.querySelectorAll('.home_tabs p').forEach(button => 
+{
+    button.addEventListener('click', function() 
+    {
+        document.querySelectorAll('.home_tabs p').forEach(b => b.classList.remove('active'));// Remove 'active' class from all buttons
+        this.classList.add('active');// Add 'active' class to the clicked button
+        let id = this.id;// Now display the corresponding data (Assets, Logout, Activity)
+        handleTabSwitch(id);
+    });
+});
+
+
+//_______________________________________________________________________________________________________________________________________
+  
+// function setNetwork() { document.getElementById("network").style.display = "none";}
 
 //_______________________________________________________________________________________________________________________________________
   
 
-  // function handleTabSwitch(tabId) {
-  //   let assetsDiv = document.getElementById('assets');
-  //   let activityDiv = document.querySelector('.activity');
-  //   let logoutDiv = document.querySelector('.logout'); // Assuming there's a logout div
+// function handleTabSwitch(tabId) {
+//   let assetsDiv = document.getElementById('assets');
+//   let activityDiv = document.querySelector('.activity');
+//   let logoutDiv = document.querySelector('.logout'); // Assuming there's a logout div
   
-  //   // Hide all sections
-  //   assetsDiv.style.display = 'none';
-  //   activityDiv.style.display = 'none';
-  //   logoutDiv.style.display = 'none';
+//   // Hide all sections
+//   assetsDiv.style.display = 'none';
+//   activityDiv.style.display = 'none';
+//   logoutDiv.style.display = 'none';
   
-  //   // Show the appropriate section based on the tab clicked
-  //   if (tabId === 'open_assets') {
-  //     assetsDiv.style.display = 'block';
-  //   } else if (tabId === 'open_activity') {
-  //     activityDiv.style.display = 'block';
-  //   } else if (tabId === 'logout') {
-  //     logoutDiv.style.display = 'block';
-  //   }
-  // }
+//   // Show the appropriate section based on the tab clicked
+//   if (tabId === 'open_assets') {
+//     assetsDiv.style.display = 'block';
+//   } else if (tabId === 'open_activity') {
+//     activityDiv.style.display = 'block';
+//   } else if (tabId === 'logout') {
+//     logoutDiv.style.display = 'block';
+//   }
+// }
 
 
 //_______________________________________________________________________________________________________________________________________
