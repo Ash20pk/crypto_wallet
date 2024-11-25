@@ -34,7 +34,7 @@ This Crypto Wallet application includes the following features:
     Follow these steps to set up your MongoDB cluster:
     
     - **Sign Up/Login:** Visit [MongoDB Website](https://www.mongodb.com/), and sign up or log in.
-    - **Create a Cluster:** Once logged in, click on "Build a Cluster". Choose an AWS cloud provider, select a region, and pick a cluster tier, then click "Create Cluster".
+    - **Create a Cluster:** Once logged in, click on "Build a Cluster". Choose an AWS cloud provider, select a region, and make sure you choose a connection method :Connecting with MongoDB for VS Code, then click "Create Cluster".
     - **Database Access:** Go to the "Database Access" section to find your MongoDB username and password. Copy these credentials for use in the next steps.
     - **Connection String:** You will need these credentials to connect to your MongoDB cluster, which will be used in your configuration files.
 
