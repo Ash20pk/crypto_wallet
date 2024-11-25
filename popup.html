@@ -2,6 +2,7 @@
 <html lang="en">
   <head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MetaSchool Wallet</title> <link rel="stylesheet" href="style.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   </head>
   <body>
     <div class="card">
@@ -10,9 +11,6 @@
         <div class="header">
           <div id="header_network" class="header_network">
             <p>
-              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"width="16"  zoomAndPan="magnify"  viewBox="0 0 375 374.999991" height="16"  preserveAspectRatio="xMidYMid meet"  version="1.0"  >
-
-              </svg>
               <span id="selected_network">Ethereum Mainnet</span>
               <svg
                 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="16" width="16"zoomAndPan="magnify"viewBox="0 0 375 374.999991" preserveAspectRatio="xMidYMid meet"
@@ -85,27 +83,22 @@
 
           <div id="network_item" class="network_list">
             <p class="network_item">    
-              <svg viewBox="0 0 16 16" fill="currentColor" height="16" width="16" xmlns="http://www.w3.org/2000/svg" class="input-icon"> <path d="M 4.269531 77.390625 L 371 77.390625 L 371 297.890625 L 4.269531 297.890625 Z M 4.269531 77.390625 " clip-rule="nonzero"></path></svg>
               <span>Ethereum Mainnet</span>
             </p>
 
             <p class="network_item">
-              <svg viewBox="0 0 16 16" fill="currentColor" height="16" width="16" xmlns="http://www.w3.org/2000/svg" class="input-icon"> <path d="M 4.269531 77.390625 L 371 77.390625 L 371 297.890625 L 4.269531 297.890625 Z M 4.269531 77.390625 " clip-rule="nonzero"></path></svg>
               <span>Polygon Mainnet</span>
             </p>
 
             <p class="network_item">
-              <svg viewBox="0 0 16 16" fill="currentColor" height="16" width="16" xmlns="http://www.w3.org/2000/svg" class="input-icon"> <path d="M 4.269531 77.390625 L 371 77.390625 L 371 297.890625 L 4.269531 297.890625 Z M 4.269531 77.390625 " clip-rule="nonzero"></path></svg>
               <span>BNB Smart Chain</span>
             </p>
 
             <p class="network_item">
-              <svg viewBox="0 0 16 16" fill="currentColor" height="16" width="16" xmlns="http://www.w3.org/2000/svg" class="input-icon"> <path d="M 4.269531 77.390625 L 371 77.390625 L 371 297.890625 L 4.269531 297.890625 Z M 4.269531 77.390625 " clip-rule="nonzero"></path></svg>
               <span>Sepolia test network</span>
             </p>
 
             <p class="network_item">
-              <svg viewBox="0 0 16 16" fill="currentColor" height="16" width="16" xmlns="http://www.w3.org/2000/svg" class="input-icon"> <path d="M 4.269531 77.390625 L 371 77.390625 L 371 297.890625 L 4.269531 297.890625 Z M 4.269531 77.390625 " clip-rule="nonzero"></path></svg>
               <span>Polygon Amoy</span>
             </p>
 
@@ -454,64 +447,52 @@
             </div>
         </div>
 
-        <!-- //MAIN BODY -->
+        <!-- Add this new section before the home div -->
+        <div class="wallet_info">
+            <div id="address_container" class="address_info_container tooltip" data-hover-text="Copy to clipboard">
+                <p id="userAddress">connecting ...</p>
+                <svg class="copy_icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+            </div>
+        </div>
+
+        <!-- Then your home div starts -->
         <div id="home" class="home">
-          <div class="home_header">
-            <div>
-              <p id="userAddress" class="tooltip" data-hover-text="Copy to clipboard">
-                connecting ...
-              </p>
+            <img class="home_header_img" src="./assets/metaschool_icon.png" alt="" />
+            <h1 id="accountBlance">0.00 MATIC</h1>
+
+            <div class="home_features">
+                <div class="home_feature_item" id="open_Transfer">
+                    <img class="home_features_img" src="./assets/send2.png" alt="" />
+                    <p class="text">Send</p>
+                </div>
+                <div class="home_feature_item" id="open_receive">
+                    <img class="home_features_img" src="./assets/receive.png" alt="" />
+                    <p class="text">Receive</p>
+                </div>
             </div>
-            <div class="Active">
-              <p>Active</p>
+
+            <div class="home_tabs">
+                <p id="open_assets">Tokens</p>
+                <p id="open_activity">Activity</p>
             </div>
-          </div>
-          <img
-            class="home_header_img"
-            src="./assets/metaschool_icon.png"
-            alt=""
-          />
-          <h1 id="accountBlance">0.00 MATIC</h1>
+            <p class="space"></p>
+            <p class="space"></p>
+            <!-- //ASSETS -->
+            <div id="assets" class="assets"></div>
 
-          <div class="home_features">
-            <div class="home_feature_item" id="open_Transfer">
-              <img class="home_features_img" src="./assets/send2.png" alt="" />
-              <p class="text">Send</p>
+            <!-------- //ACTIVITY ------------------------------------------------------------------------------------------------>
+
+            <div id="activity" class="activity">
+                <div class="assets_item">
+                    <!-- Activity_History(); -->
+                    <!-- <img class="assets_item_img" src="./assets/metaschool_icon.png" alt=""/>
+                    <span>d92i33239d... </span>
+                    <span>053. MATIC</span> -->
+                </div>
             </div>
-          </div>
-
-
-
-
-
-
-          <div class="home_tabs">
-            <p id="open_assets">Tokens</p>
-            <p id="open_activity">Activity</p>
-          </div>
-          <p class="space"></p>
-          <p class="space"></p>
-          <!-- //ASSETS -->
-          <div id="assets" class="assets"></div>
-
-
-
-
-        
-          <!-------- //ACTIVITY ------------------------------------------------------------------------------------------------>
-
-          <div id="activity" class="activity">
-            
-            <div class="assets_item">
-
-              <!-- Activity_History(); -->
-              <!-- <img class="assets_item_img" src="./assets/metaschool_icon.png" alt=""/>
-              <span>d92i33239d... </span>
-              <span>053. MATIC</span> -->
-
-            </div>
-    
-          </div>
         </div>
       </div>
     </div>
@@ -569,6 +550,65 @@
                     </svg>
                 </div>
                 <span>About</span>
+            </div>
+        </div>
+    </div>
+    <!-- Add the receive modal -->
+    <div id="receive_form" class="receive_form">
+        <div class="form">
+            <img id="goBack_receive" class="goBack" src="./assets/_back.png" alt=""/>
+            <p id="heading">Receive</p>
+            
+            <div class="qr_container">
+                <div id="qrcode"></div>
+            </div>
+            
+            <div class="receive_address_container" id="receive_address_container">
+                <p class="receive_address" id="receive_address"></p>
+                <div class="copy_success">Address copied!</div>
+            </div>
+            
+            <button id="copy_address" class="copy_button">
+                <span>Copy Address</span>
+            </button>
+        </div>
+    </div>
+    <div id="confirmation_dialog" class="confirmation_dialog">
+        <div class="confirmation_header">
+            <img id="close_confirmation" class="goBack" src="./assets/_back.png" alt=""/>
+            <h2>Confirm Transaction</h2>
+        </div>
+        
+        <div class="confirmation_content">
+            <div class="transaction_details">
+                <div class="detail_row">
+                    <span class="detail_label">From</span>
+                    <span id="confirm_from" class="detail_value"></span>
+                </div>
+                <div class="detail_row">
+                    <span class="detail_label">To</span>
+                    <span id="confirm_to" class="detail_value"></span>
+                </div>
+                <div class="detail_row">
+                    <span class="detail_label">Amount</span>
+                    <span id="confirm_amount" class="detail_value"></span>
+                </div>
+            </div>
+
+            <div class="estimated_gas">
+                <div class="gas_row">
+                    <span class="gas_label">Estimated Gas Fee</span>
+                    <span id="gas_fee" class="gas_value">0.000021 ETH</span>
+                </div>
+                <div class="gas_row">
+                    <span class="gas_label">Max Fee</span>
+                    <span id="max_fee" class="gas_value">0.000025 ETH</span>
+                </div>
+            </div>
+
+            <div class="confirmation_buttons">
+                <button class="reject_button" id="reject_transaction">Reject</button>
+                <button class="confirm_button" id="confirm_transaction">Confirm</button>
             </div>
         </div>
     </div>

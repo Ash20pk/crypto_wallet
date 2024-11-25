@@ -6,7 +6,7 @@ const transactionSchema = new mongoose.Schema({
   amount:              String,     
   Network:             String,     
   Hash:                String,     
-//   timestamp:   { type: Date, default: Date.now }
+  timestamp:   { type: Date, default: Date.now }
 });
 
 module.exports = mongoose.model('Transaction', transactionSchema);
