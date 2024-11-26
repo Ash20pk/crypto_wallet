@@ -1518,6 +1518,9 @@ function initializeTokenSelector() {
     const tokenSelector = document.getElementById('token_selector');
     const tokenList = document.getElementById('token_list');
     const selectedToken = tokenSelector.querySelector('.selected_token');
+
+    // Populate token list
+    updateTokenList();
     
     // Toggle token list
     selectedToken.addEventListener('click', () => {
@@ -1531,9 +1534,6 @@ function initializeTokenSelector() {
             tokenList.style.display = 'none';
         }
     });
-
-    // Populate token list
-    updateTokenList();
 }
 
 async function updateTokenList() {
@@ -1560,8 +1560,7 @@ async function updateTokenList() {
         <div class="token_item native_token" data-symbol="${nativeSymbol}" data-address="native">
             <img class="token_icon" src="${nativeTokenIcon}" alt="${nativeSymbol}"/>
             <div class="token_info">
-                <span class="token_symbol">${nativeSymbol}</span>
-                <span class="token_balance">${nativeBalance} ${nativeSymbol}</span>
+                <span class="token_balance">${parseFloat(nativeBalance).toFixed(6)} ${nativeSymbol}</span>
             </div>
         </div>
     `;
@@ -1580,10 +1579,9 @@ async function updateTokenList() {
             const balance = await fetchTokenBalance(token.address, address);
             tokenListHtml += `
                 <div class="token_item" data-symbol="${token.symbol}" data-address="${token.address}">
-                    <img class="token_icon" src="./assets/metaschool_icon.png" alt=""/>
+                    <img class="token_icon" src="${generateTokenAvatar(token.symbol)}" alt="${nativeSymbol}"/>
                     <div class="token_info">
-                        <span class="token_symbol">${token.symbol}</span>
-                        <span class="token_balance">${balance} ${token.symbol}</span>
+                        <span class="token_balance">${parseFloat(balance).toFixed(6)} ${token.symbol}</span>
                     </div>
                 </div>
             `;
@@ -2025,10 +2023,10 @@ function generateTokenAvatar(symbol) {
     
     // Draw text
     ctx.fillStyle = '#FFFFFF';
-    ctx.font = 'bold 20px Arial';
+    ctx.font = '20px Arial';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText(symbol.slice(0, 2).toUpperCase(), 20, 20);
+    ctx.fillText(symbol.slice(0, 1).toUpperCase(), 20, 20);
     
     return canvas.toDataURL();
 }
