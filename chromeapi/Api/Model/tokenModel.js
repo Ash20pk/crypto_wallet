@@ -4,8 +4,9 @@ const tokenSchema = new mongoose.Schema({
   name: String,
   address: String,
   symbol: String,
-  provider:String,
-  connected_account : String
+  provider: String,
+  connected_account: String,
+  avatar: String
 });
 
 const Token = mongoose.model("Token", tokenSchema);

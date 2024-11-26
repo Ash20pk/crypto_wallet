@@ -1117,11 +1117,13 @@ function openImport()
     console.log('openImport called');
     const importToken = document.getElementById("import_token");
     const home = document.getElementById("home");
+    const walletInfo = document.querySelector(".wallet_info");
     
     if (importToken && home) {
         console.log('Showing import token, hiding home');
         importToken.style.display = "block";
         home.style.display = "none";
+        if (walletInfo) walletInfo.style.display = "none";
     } else {
         console.error('Import token or home element not found');
     }
@@ -1131,14 +1133,21 @@ function importGoBack()
 {
     console.log('importGoBack called');
     const importToken = document.getElementById("import_token");
-    const settingsWindow = document.getElementById("settings_window");
+    const home = document.getElementById("home");
+    const walletInfo = document.querySelector(".wallet_info");
     
-    if (importToken && settingsWindow) {
-        console.log('Hiding import token, showing settings');
+    if (importToken && home) {
+        console.log('Hiding import token, showing home');
         importToken.style.display = "none";
-        settingsWindow.style.display = "block";
+        home.style.display = "block";
+        if (walletInfo) walletInfo.style.display = "block";
+        
+        // Clear form fields
+        document.getElementById("token_address").value = '';
+        document.getElementById("token_symbol").value = '';
+        document.getElementById("token_name").value = '';
     } else {
-        console.error('Import token or settings window not found');
+        console.error('Import token or home element not found');
     }
 }
 //_______________________________________________________________________________________________________________________________________  
@@ -1322,6 +1331,7 @@ async function myFunction() {
         // Add the header with import button
         tokenRender.innerHTML = `
             <div class="assets_header">
+                <h3>Tokens</h3>
                 <button id="import_token_btn" class="import_token_btn">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="12" cy="12" r="10"/>
@@ -1333,12 +1343,6 @@ async function myFunction() {
             </div>
         `;
         tokenRender.appendChild(tokensContainer);
-        
-        // Add click handler for import button
-        const importTokenBtn = document.getElementById('import_token_btn');
-        if (importTokenBtn) {
-            importTokenBtn.addEventListener('click', openImport);
-        }
     }
 
     try {
@@ -1350,19 +1354,13 @@ async function myFunction() {
         // Clear tokens container
         tokensContainer.innerHTML = '';
 
-        // Add native token
+        // Add native token with improved layout
         let nativeTokenIcon = NETWORK_ICONS[providerURL] || DEFAULT_ICON;
         let nativeTokenElement = `
-            <div class="assets_item">
-                <img class="assets_item_img" src="${nativeTokenIcon}" alt="${nativeSymbol}"/>
-                <div class="token_info">
-                    <span class="token_symbol">${nativeSymbol}</span>
-                    <span class="token_balance">Native Token</span>
-                </div>
-                <div class="token_amount">
-                    <span class="token_value">${parseFloat(ethers.utils.formatEther(nativeBalance)).toFixed(4)}</span>
-                    <span class="token_price">${nativeSymbol}</span>
-                </div>
+            <div class="token_card">
+                <img class="token_icon" src="${nativeTokenIcon}" alt="${nativeSymbol}"/>
+                <span class="token_symbol">${nativeSymbol}</span>
+                <span class="token_balance">${parseFloat(ethers.utils.formatEther(nativeBalance)).toFixed(4)}</span>
             </div>
         `;
         tokensContainer.innerHTML = nativeTokenElement;
@@ -1381,43 +1379,36 @@ async function myFunction() {
                 let balance = await fetchTokenBalance(token.address, parsedObj.address);
                 
                 let tokenElement = document.createElement('div');
-                tokenElement.className = 'assets_token_item';
+                tokenElement.className = 'token_card';
                 tokenElement.innerHTML = `
-                    <img class="assets_item_img" src="./assets/token_icon.png" alt="${token.symbol}"/>
-                    <div class="token_info">
-                        <span class="token_symbol">${token.symbol}</span>
-                        <span class="token_balance">${token.name || 'Custom Token'}</span>
-                    </div>
-                    <div class="token_amount">
-                        <span class="token_value">${parseFloat(balance).toFixed(4)}</span>
-                        <span class="token_price">${token.symbol}</span>
-                    </div>
+                    <img class="token_icon" src="${token.avatar || generateTokenAvatar(token.symbol)}" 
+                         alt="${token.symbol}" 
+                         onerror="this.src='${generateTokenAvatar(token.symbol)}'"/>
+                    <span class="token_symbol">${token.symbol}</span>
+                    <span class="token_balance">${parseFloat(balance).toFixed(4)}</span>
                 `;
                 tokensContainer.appendChild(tokenElement);
             }
-        } else if (tokensContainer.childNodes.length === 0) {
-            // Show empty state if no tokens
-            tokensContainer.innerHTML = `
-                <div class="empty_tokens">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="10"/>
-                        <path d="M12 8v4M12 16h.01"/>
-                    </svg>
-                    <p>No tokens found</p>
-                </div>
-            `;
+        }
+
+        // Add click handler for import button
+        const importTokenBtn = document.getElementById('import_token_btn');
+        if (importTokenBtn) {
+            importTokenBtn.addEventListener('click', openImport);
         }
 
     } catch (error) {
         console.error("Error fetching tokens:", error);
         tokensContainer.innerHTML = `
-            <div class="empty_tokens">
+            <div class="empty_state">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M12 8v4M12 16h.01"/>
+                </svg>
                 <p>Error loading tokens</p>
             </div>
         `;
     }
-
-    // ... rest of your existing code ...
 }
   
 //_______________________________________________________________________________________________________________________________________
@@ -1838,5 +1829,207 @@ function getNetworkName(url) {
         case BNB_Smart_chain: return "BNB Smart Chain";
         default: return "Unknown Network";
     }
+}
+
+// Update the token import functions
+async function validateTokenAddress(address) {
+    try {
+        if (!ethers.utils.isAddress(address)) {
+            throw new Error('Invalid address format');
+        }
+
+        const provider = new ethers.providers.JsonRpcProvider(providerURL);
+        const ERC20_ABI = [
+            "function name() view returns (string)",
+            "function symbol() view returns (string)",
+            "function decimals() view returns (uint8)",
+            "function balanceOf(address) view returns (uint256)"
+        ];
+        
+        const contract = new ethers.Contract(address, ERC20_ABI, provider);
+        
+        // Try to get token details and validate it's a real token
+        const [name, symbol, decimals] = await Promise.all([
+            contract.name(),
+            contract.symbol(),
+            contract.decimals()
+        ]);
+        
+        // Additional validation
+        if (!name || !symbol || decimals === undefined) {
+            throw new Error('Invalid token contract');
+        }
+        
+        // Generate avatar
+        const avatar = generateTokenAvatar(symbol);
+        
+        return { 
+            isValid: true, 
+            name, 
+            symbol,
+            decimals,
+            avatar
+        };
+    } catch (error) {
+        console.error('Token validation error:', error);
+        return { 
+            isValid: false, 
+            error: error.message || 'Invalid token contract address' 
+        };
+    }
+}
+
+async function addToken() {
+    const addressInput = document.getElementById("token_address");
+    const symbolInput = document.getElementById("token_symbol");
+    const nameInput = document.getElementById("token_name");
+    
+    // Show loading state
+    const addTokenButton = document.getElementById("add_token");
+    const originalButtonText = addTokenButton.innerHTML;
+    addTokenButton.innerHTML = 'Validating...';
+    addTokenButton.disabled = true;
+
+    try {
+        const address = addressInput.value.trim();
+
+        if (!address) {
+            throw new Error('Please enter a token contract address');
+        }
+
+        // Validate the token address and fetch details
+        addTokenButton.innerHTML = 'Fetching token details...';
+        const validation = await validateTokenAddress(address);
+        if (!validation.isValid) {
+            throw new Error(validation.error);
+        }
+
+        // Auto-fill token details
+        symbolInput.value = validation.symbol;
+        nameInput.value = validation.name;
+
+        // Get user's wallet address
+        const walletData = JSON.parse(localStorage.getItem('userWallet'));
+        if (!walletData?.address) {
+            throw new Error('Wallet not found');
+        }
+
+        // Check if token already exists
+        addTokenButton.innerHTML = 'Checking existing tokens...';
+        const existingTokens = await fetch("http://localhost:3000/api/v1/tokens/alltoken");
+        const tokenData = await existingTokens.json();
+        
+        const tokenExists = tokenData.data.tokens.some(token => 
+            token.address.toLowerCase() === address.toLowerCase() &&
+            token.provider.toLowerCase() === providerURL.toLowerCase() &&
+            token.connected_account.toLowerCase() === walletData.address.toLowerCase()
+        );
+
+        if (tokenExists) {
+            throw new Error('Token already imported');
+        }
+
+        // Prepare data for API call
+        addTokenButton.innerHTML = 'Importing token...';
+        const data = {
+            name: validation.name,
+            address: address,
+            symbol: validation.symbol,
+            provider: providerURL,
+            connected_account: walletData.address,
+            avatar: validation.avatar // Add avatar to the token data
+        };
+
+        // Make API call to add token
+        const response = await fetch("http://localhost:3000/api/v1/tokens/createtoken", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+
+        if (result.status === 'success') {
+            // Clear form
+            addressInput.value = '';
+            symbolInput.value = '';
+            nameInput.value = '';
+
+            // Show success message
+            alert('Token imported successfully');
+
+            // Refresh the assets list
+            myFunction();
+
+            // Go back to home screen
+            importGoBack();
+        } else {
+            throw new Error(result.message || 'Failed to import token');
+        }
+
+    } catch (error) {
+        console.error('Error adding token:', error);
+        alert(error.message || 'Failed to import token. Please try again.');
+    } finally {
+        // Reset button state
+        addTokenButton.innerHTML = originalButtonText;
+        addTokenButton.disabled = false;
+    }
+}
+
+// Update the importGoBack function
+function importGoBack() {
+    console.log('importGoBack called');
+    const importToken = document.getElementById("import_token");
+    const home = document.getElementById("home");
+    const walletInfo = document.querySelector(".wallet_info");
+    
+    if (importToken && home) {
+        console.log('Hiding import token, showing home');
+        importToken.style.display = "none";
+        home.style.display = "block";
+        if (walletInfo) walletInfo.style.display = "block";
+        
+        // Clear form fields
+        document.getElementById("token_address").value = '';
+        document.getElementById("token_symbol").value = '';
+        document.getElementById("token_name").value = '';
+    } else {
+        console.error('Import token or home element not found');
+    }
+}
+
+// Add event listener for the import token button
+document.addEventListener('DOMContentLoaded', function() {
+    const addTokenButton = document.getElementById('add_token');
+    if (addTokenButton) {
+        addTokenButton.addEventListener('click', addToken);
+    }
+});
+
+// Add these utility functions
+function generateTokenAvatar(symbol) {
+    // Create a canvas element
+    const canvas = document.createElement('canvas');
+    canvas.width = 40;
+    canvas.height = 40;
+    const ctx = canvas.getContext('2d');
+    
+    // Draw circle background
+    ctx.beginPath();
+    ctx.arc(20, 20, 20, 0, 2 * Math.PI);
+    ctx.fillStyle = `hsl(${Math.random() * 360}, 70%, 30%)`; // Random color
+    ctx.fill();
+    
+    // Draw text
+    ctx.fillStyle = '#FFFFFF';
+    ctx.font = 'bold 20px Arial';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(symbol.slice(0, 2).toUpperCase(), 20, 20);
+    
+    return canvas.toDataURL();
 }
 

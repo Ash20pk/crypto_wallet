@@ -3,7 +3,6 @@
   border-radius: 0.5rem; /* Rounded corners */
   background: linear-gradient(to right, #27c105 0%, #024921 100%); 
   color: #fefefe; /* White text color */
-  transition: all 0.3s ease; /* Smooth transition for color and background */
   text-align: center; /* Center-align the text */
   cursor: pointer; /* Pointer cursor for better UX */
   
@@ -15,17 +14,13 @@
 }
 
 .home_tabs p.active:hover {
-  background: linear-gradient(to right, #27c105 0%, #010500 100%); /* Lighter green with subtle white shade */
-  color: #fefefe; /* Black text on hover for contrast */
-  /* box-shadow: 0px 4px 8px rgba(0, 255, 117, 0.5); Add shadow for hover effect */
+  background: #27c105;
+  color: #fefefe;
   cursor: pointer; /* Pointer cursor for better UX */
 }
 
 .home_tabs p
 {
-  /* background-image: linear-gradient(163deg, #05ff26 0%, #c2e3ce 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent; */
   padding: 0.5rem 1rem; /* Button padding */
   cursor: pointer;
 }
@@ -178,18 +173,18 @@ opacity: 0.7;
 
 .transfer_form .input-field
 {
-   color: #040404;
+   color: #ffffff;
 }
 .import_account .input-field
 {
-  color: #000000;
+  color: #ffffff;
 }
 
 
 
 .home_screen_login .input-field
 {
-  color: #050505;
+  color: #ffffff;
 }
 
 /* .home_header p
@@ -199,13 +194,13 @@ opacity: 0.7;
 
 .create_popUp .input-field
 {
-  color: #000000;
+  color: #ffffff;
 }
 
 
 .import_token .input-field
 {
-  color: #000000;
+  color: #ffffff;
 }
 
 .tooltip {
@@ -1524,9 +1519,9 @@ body {
 }
 
 .token_symbol {
-  font-size: 1rem;
-  font-weight: 500;
   color: var(--text);
+  font-size: 0.95rem;
+  text-align: right;
 }
 
 .token_balance {
@@ -1630,42 +1625,6 @@ body {
     display: none;
     background: var(--background);
     height: 100vh;
-}
-
-.tokens_container {
-  margin-top: 1rem;
-}
-
-.assets_header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.75rem 1rem;
-  border-bottom: 1px solid rgba(39, 193, 5, 0.1);
-  background: var(--background);
-  position: sticky;
-  top: 0;
-  z-index: 2;
-}
-
-.import_token_btn {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  background: rgba(39, 193, 5, 0.1);
-  border: 1px solid rgba(39, 193, 5, 0.2);
-  border-radius: var(--border-radius);
-  color: var(--primary);
-  font-size: 0.9rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.import_token_btn:hover {
-  background: rgba(39, 193, 5, 0.15);
-  transform: translateY(-1px);
 }
 
 .import_token_btn svg {
@@ -2004,25 +1963,21 @@ body {
 }
 
 .empty_state {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 3rem 1rem;
-    color: var(--text-secondary);
+  text-align: center;
+  padding: 2rem 1rem;
+  color: var(--text-secondary);
 }
 
 .empty_state svg {
-    width: 48px;
-    height: 48px;
-    margin-bottom: 1rem;
-    color: rgba(39, 193, 5, 0.3);
+  color: rgba(39, 193, 5, 0.3);
+  margin-bottom: 0.75rem;
+  width: 32px;
+  height: 32px;
 }
 
 .empty_state p {
-    font-size: 0.95rem;
-    margin: 0;
-    color: var(--text-secondary);
+  margin: 0;
+  font-size: 0.85rem;
 }
 
 /* Update menu styles */
@@ -2037,7 +1992,7 @@ body {
     right: 0;
     width: 180px;
     background: #151515;
-    border: 1px solid rgba(39, 193, 5, 0.2);
+    border: 1px solid #27c105;
     border-radius: 0.5rem;
     padding: 0.5rem;
     margin-top: 0.5rem;
@@ -2050,15 +2005,14 @@ body {
     align-items: center;
     gap: 0.75rem;
     padding: 0.75rem;
-    color: var(--text);
+    color: #ffffff;
     cursor: pointer;
+    transition: background-color 0.2s;
     border-radius: 0.375rem;
-    transition: all 0.2s ease;
 }
 
 .menu_item:hover {
-    background: rgba(39, 193, 5, 0.1);
-    color: var(--primary);
+    background-color: #27c10533;
 }
 
 .menu_item svg {
@@ -2269,6 +2223,7 @@ body {
     flex-direction: column;
     height: 100%;
     padding: 0 1.5rem;
+    align-items: center;
 }
 
 .receive_form .goBack {
@@ -2513,5 +2468,137 @@ body {
 
 .activity_type .pending {
     color: #ffd700;
+}
+
+/* Token List Styling - MetaMask style */
+.tokens_container {
+    padding: 0.5rem 1rem;
+    margin-top: 1rem;
+}
+
+.assets_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(39, 193, 5, 0.1);
+}
+
+.assets_header h3 {
+  color: var(--text);
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.import_token_btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.8rem;
+  background: transparent;
+  border: none;
+  color: var(--primary);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.import_token_btn:hover {
+    opacity: 0.8;
+}
+
+.import_token_btn svg {
+    width: 14px;
+    height: 14px;
+}
+
+.token_card {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 0.5rem;
+  border-bottom: 1px solid rgba(39, 193, 5, 0.05);
+  cursor: pointer;
+  transition: background-color 0.2s;
+  justify-content: space-between;
+}
+
+.token_card:hover {
+  background: rgba(39, 193, 5, 0.05);
+}
+
+.token_main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
+}
+
+.token_info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.token_icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  margin-right: 1rem;
+}
+
+.token_details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+}
+
+.token_name {
+    color: var(--text);
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+.token_type {
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+}
+
+.token_balance {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+}
+
+.balance_amount {
+    color: var(--text);
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+.balance_symbol {
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+}
+
+/* Empty state styling */
+.empty_state {
+    text-align: center;
+    padding: 2rem 1rem;
+    color: var(--text-secondary);
+}
+
+.empty_state svg {
+    color: rgba(39, 193, 5, 0.3);
+    margin-bottom: 0.75rem;
+    width: 32px;
+    height: 32px;
+}
+
+.empty_state p {
+    margin: 0;
+    font-size: 0.85rem;
 }
 

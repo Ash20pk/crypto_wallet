@@ -2,7 +2,7 @@
 <html lang="en">
   <head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MetaSchool Wallet</title> <link rel="stylesheet" href="style.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="./QRcode.js"></script>
   </head>
   <body>
     <div class="card">
@@ -374,7 +374,6 @@
                     <p id="heading">Import Token</p>
                 </div>
 
-                <!-- Import Token Section -->
                 <div class="import_token_section">
                     <div class="field">
                         <input
@@ -385,11 +384,11 @@
                         />
                     </div>
 
-                    <div class="field">
+                    <!-- <div class="field">
                         <input
                             type="text"
                             class="input-field"
-                            placeholder="Token Symbol"
+                            placeholder="Token Symbol (e.g. USDT)"
                             id="token_symbol"
                         />
                     </div>
@@ -398,20 +397,21 @@
                         <input
                             type="text"
                             class="input-field"
-                            placeholder="Token Name"
+                            placeholder="Token Name (e.g. Tether USD)"
                             id="token_name"
                         />
+                    </div> -->
+
+                    <div class="import_warning">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                            <line x1="12" y1="9" x2="12" y2="13"/>
+                            <line x1="12" y1="17" x2="12.01" y2="17"/>
+                        </svg>
+                        <span>Custom tokens are imported at your own risk</span>
                     </div>
 
-                    <p class="import_warning">
-                        <svg viewBox="0 0 16 16" width="16" height="16">
-                            <path d="M8 1.5l7 13H1l7-13z" fill="currentColor"/>
-                            <text x="8" y="13" text-anchor="middle" fill="#000" font-size="9">!</text>
-                        </svg>
-                        Custom tokens are imported at your own risk
-                    </p>
-
-                    <button id="add_new_token" class="button3 connectWallet">Import</button>
+                    <button id="add_token" class="button3 connectWallet">Import Token</button>
                 </div>
             </div>
         </div>
