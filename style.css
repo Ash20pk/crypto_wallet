@@ -394,6 +394,15 @@ body {
   border-color: rgba(39, 193, 5, 0.2);
 }
 
+.network_item.active .network_icon {
+  background: rgba(39, 193, 5, 0.2);
+}
+
+.network_item.active span {
+  color: #27c105;
+  font-weight: 600;
+}
+
 .network-badge {
   width: 24px;
   height: 24px;
@@ -445,11 +454,6 @@ body {
 /* Add a subtle divider between networks */
 .network_item:not(:last-child) {
   border-bottom: 1px solid rgba(39, 193, 5, 0.05);
-}
-
-/* Add animation for smooth transitions */
-.network_item {
-  animation: fadeIn 0.2s ease;
 }
 
 @keyframes fadeIn {

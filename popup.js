@@ -454,6 +454,9 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         });
     }
+
+    // Initialize active network
+    initializeActiveNetwork();
 });
 
 // Keep all your existing code below this point
@@ -861,83 +864,79 @@ function getSelectedNetwork(e) {
     let networkText;
     const targetElement = e.target;
     
-    const span = targetElement.querySelector('span') || 
-                targetElement.closest('.network_item')?.querySelector('span') ||
-                (targetElement.tagName === 'SPAN' ? targetElement : null);
-
-    if (span) {
-        networkText = span.textContent.trim();
-        console.log('Found network text:', networkText);
-    } else {
-        console.log('No network text found');
+    const networkItem = targetElement.closest('.network_item');
+    if (!networkItem) {
+        console.log('No network item found');
         return;
     }
 
-    let element = document.getElementById("selected_network");
-    if (element) {
-        element.innerHTML = networkText;
-    }
+    const span = networkItem.querySelector('span');
+    if (span) {
+        networkText = span.textContent.trim();
+        console.log('Found network text:', networkText);
+        
+        // Remove active class from all network items
+        document.querySelectorAll('.network_item').forEach(item => {
+            item.classList.remove('active');
+        });
+        
+        // Add active class to selected network
+        networkItem.classList.add('active');
+        
+        // Update header text
+        let element = document.getElementById("selected_network");
+        if (element) {
+            element.innerHTML = networkText;
+        }
 
-    // Update provider URL and store both network name and URL
-    let networkIcon;
-    switch (networkText) {
-        case "Ethereum Mainnet":
-            providerURL = ETHEREUM;
-            networkIcon = NETWORK_ICONS[ETHEREUM];
-            localStorage.setItem("ACTIVE_NETWORK", "Ethereum Mainnet");
-            localStorage.setItem("ACTIVE_NETWORK_URL", ETHEREUM);
-            break;
-        case "Polygon Mainnet":
-            providerURL = POLYGON;
-            networkIcon = NETWORK_ICONS[POLYGON];
-            localStorage.setItem("ACTIVE_NETWORK", "Polygon Mainnet");
-            localStorage.setItem("ACTIVE_NETWORK_URL", POLYGON);
-            break;
-        case "Polygon Amoy":
-            providerURL = POLYGON_AMOY;
-            networkIcon = NETWORK_ICONS[POLYGON_AMOY];
-            localStorage.setItem("ACTIVE_NETWORK", "Polygon Amoy");
-            localStorage.setItem("ACTIVE_NETWORK_URL", POLYGON_AMOY);
-            break;
-        case "Sepolia test network":
-            providerURL = SEPOLIA_TEST;
-            networkIcon = NETWORK_ICONS[SEPOLIA_TEST];
-            localStorage.setItem("ACTIVE_NETWORK", "Sepolia test network");
-            localStorage.setItem("ACTIVE_NETWORK_URL", SEPOLIA_TEST);
-            break;
-        case "BNB Smart Chain":
-            providerURL = BNB_Smart_chain;
-            networkIcon = NETWORK_ICONS[BNB_Smart_chain];
-            localStorage.setItem("ACTIVE_NETWORK", "BNB Smart Chain");
-            localStorage.setItem("ACTIVE_NETWORK_URL", BNB_Smart_chain);
-            break;
-        default:
-            console.log('Unknown network:', networkText);
-            return;
-    }
+        // Update provider URL and store network info
+        let networkUrl;
+        switch (networkText) {
+            case "Ethereum Mainnet":
+                networkUrl = ETHEREUM;
+                break;
+            case "Polygon Mainnet":
+                networkUrl = POLYGON;
+                break;
+            case "Polygon Amoy":
+                networkUrl = POLYGON_AMOY;
+                break;
+            case "Sepolia test network":
+                networkUrl = SEPOLIA_TEST;
+                break;
+            case "BNB Smart Chain":
+                networkUrl = BNB_Smart_chain;
+                break;
+            default:
+                console.log('Unknown network:', networkText);
+                return;
+        }
 
-    // Update the header image
-    const headerImg = document.querySelector('.home_header_img');
-    if (headerImg) {
-        headerImg.src = networkIcon || DEFAULT_ICON;
-        headerImg.alt = networkText;
-    }
+        // Update provider URL
+        providerURL = networkUrl;
+        
+        // Store network preference
+        localStorage.setItem("ACTIVE_NETWORK", networkText);
+        localStorage.setItem("ACTIVE_NETWORK_URL", networkUrl);
 
-    // Hide network selector and show address
-    const networkElement = document.getElementById("network");
-    const userAddressElement = document.getElementById("userAddress");
-    
-    if (networkElement) networkElement.style.display = "none";
-    if (userAddressElement) userAddressElement.style.display = "block";
+        // Hide network selector and show address
+        const networkElement = document.getElementById("network");
+        const userAddressElement = document.getElementById("userAddress");
+        
+        if (networkElement) networkElement.style.display = "none";
+        if (userAddressElement) userAddressElement.style.display = "block";
 
-    // Update balance
-    let str = localStorage.getItem("userWallet");
-    let parsedObj = JSON.parse(str);
-    if (parsedObj?.address) {
-        checkBlance(parsedObj.address);
+        // Update balance and assets
+        let str = localStorage.getItem("userWallet");
+        let parsedObj = JSON.parse(str);
+        if (parsedObj?.address) {
+            checkBlance(parsedObj.address);
+        }
+        
+        myFunction();
+    } else {
+        console.log('No span found in network item');
     }
-    
-    myFunction();
 }
   
 
@@ -1302,6 +1301,8 @@ let fetchTokenBalance = async(tokenAddress,accountAddress) =>
 //_______________________________________________________________________________________________________________________________________
     
 async function myFunction() {
+    initializeNetwork();  // Initialize network before proceeding
+    
     let str = localStorage.getItem("userWallet");
     let parsedObj = JSON.parse(str);
 
@@ -2029,5 +2030,46 @@ function generateTokenAvatar(symbol) {
     ctx.fillText(symbol.slice(0, 1).toUpperCase(), 20, 20);
     
     return canvas.toDataURL();
+}
+
+// Add this function to initialize the active network on page load
+function initializeActiveNetwork() {
+    const activeNetwork = localStorage.getItem("ACTIVE_NETWORK");
+    if (activeNetwork) {
+        document.querySelectorAll('.network_item').forEach(item => {
+            const span = item.querySelector('span');
+            if (span && span.textContent.trim() === activeNetwork) {
+                item.classList.add('active');
+            } else {
+                item.classList.remove('active');
+            }
+        });
+    }
+}
+
+// Add this function near the top of your file
+function initializeNetwork() {
+    // Get saved network URL from localStorage
+    const savedNetworkUrl = localStorage.getItem("ACTIVE_NETWORK_URL");
+    if (savedNetworkUrl) {
+        providerURL = savedNetworkUrl;
+        
+        // Update network display name
+        const networkName = getNetworkName(savedNetworkUrl);
+        const networkElement = document.getElementById("selected_network");
+        if (networkElement) {
+            networkElement.textContent = networkName;
+        }
+        
+        // Update active network item visual state
+        document.querySelectorAll('.network_item').forEach(item => {
+            const span = item.querySelector('span');
+            if (span && span.textContent === networkName) {
+                item.classList.add('active');
+            } else {
+                item.classList.remove('active');
+            }
+        });
+    }
 }
 
