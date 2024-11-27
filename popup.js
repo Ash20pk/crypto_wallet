@@ -463,6 +463,107 @@ document.addEventListener("DOMContentLoaded", function() {
     if (maxButton) {
         maxButton.addEventListener('click', handleMaxAmount);
     }
+
+    // Add event listener for "Create Account" link
+    const createAccountLink = document.getElementById("accountCreate");
+    if (createAccountLink) {
+        createAccountLink.addEventListener("click", function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            createUser(); // Call createUser directly to show the form
+        });
+    }
+
+    // Also add event listener for "Login" link in create account screen
+    const loginAccountLink = document.getElementById("loginAccount");
+    if (loginAccountLink) {
+        loginAccountLink.addEventListener("click", function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            document.getElementById("createAccount").style.display = "none";
+            document.getElementById("LoginUser").style.display = "block";
+        });
+    }
+
+    // Add event listener for "Create Account" button
+    const openCreateButton = document.getElementById("openCreate");
+    if (openCreateButton) {
+        openCreateButton.addEventListener("click", function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            openCreate(); // Call openCreate directly
+        });
+    }
+
+    // Add event listener for Sign Up button
+    const signUpButton = document.getElementById("sign_up");
+    if (signUpButton) {
+        signUpButton.addEventListener("click", function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            signUp();
+        });
+    }
+
+    // Add copy functionality for wallet details
+    document.querySelectorAll('.copy_button').forEach(button => {
+        button.addEventListener('click', function() {
+            const type = this.dataset.clipboard;
+            let textToCopy = '';
+            
+            switch(type) {
+                case 'address':
+                    textToCopy = document.getElementById('createdAddress').textContent;
+                    break;
+                case 'privateKey':
+                    textToCopy = document.getElementById('createdPrivateKey').textContent;
+                    break;
+                case 'mnemonic':
+                    textToCopy = document.getElementById('createdMnmonic').textContent;
+                    break;
+            }
+
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                // Add copied class for visual feedback
+                this.classList.add('copied');
+                const originalText = this.innerHTML;
+                this.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    Copied!
+                `;
+                
+                // Reset button after 2 seconds
+                setTimeout(() => {
+                    this.classList.remove('copied');
+                    this.innerHTML = originalText;
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy text:', err);
+            });
+        });
+    });
+
+    // Add event listener for the "Go Back" button
+    const goBackButton = document.getElementById("goHomePage");
+    if (goBackButton) {
+        goBackButton.addEventListener("click", function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            goBackToLogin();
+        });
+    }
+
+    // Add event listener for the back button in create account form
+    const goBackToLoginBtn = document.getElementById("goBackToLogin");
+    if (goBackToLoginBtn) {
+        goBackToLoginBtn.addEventListener("click", function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            goBackToLogin();
+        });
+    }
 });
 
 // Keep all your existing code below this point
@@ -736,8 +837,26 @@ function getNetworkSymbol() {
 }
 
 async function executeTransaction(amount, toAddress) {
-    document.getElementById("transfer_center").style.display = "flex";
-    document.getElementById("confirmation_dialog").style.display = "none";
+    // Get elements and check if they exist
+    const transferCenter = document.getElementById("transfer_center");
+    const confirmationDialog = document.getElementById("confirmation_dialog");
+    const transferForm = document.getElementById("transfer_form");
+    const home = document.getElementById("home");
+    
+    if (!transferCenter || !confirmationDialog || !transferForm || !home) {
+        console.error('Required elements not found:', {
+            transferCenter: !!transferCenter,
+            confirmationDialog: !!confirmationDialog,
+            transferForm: !!transferForm,
+            home: !!home
+        });
+        alert('Something went wrong. Please try again.');
+        return;
+    }
+
+    // Show loading state
+    transferCenter.style.display = "flex";
+    confirmationDialog.style.display = "none";
     
     const provider = new ethers.providers.JsonRpcProvider(providerURL);
     const wallet = new ethers.Wallet(privateKey, provider);
@@ -750,46 +869,43 @@ async function executeTransaction(amount, toAddress) {
         };
         
         const txResponse = await wallet.sendTransaction(tx);
-        console.log(txResponse);
+        console.log('Transaction response:', txResponse);
         
-        document.getElementById("transfer_center").style.display = "none";
-        const link = document.getElementById("link");
+        // Hide loading state
+        transferCenter.style.display = "none";
         
         // Set explorer link based on network
-        if (providerURL == POLYGON) {
-            link.href = `https://polygonscan.com/tx/${txResponse.hash}`;
-        } else if (providerURL == POLYGON_AMOY) {
-            link.href = `https://amoy.polygonscan.com/tx/${txResponse.hash}`;
-        } else if (providerURL == ETHEREUM) {
-            link.href = `https://etherscan.io/tx/${txResponse.hash}`;
-        } else if (providerURL == SEPOLIA_TEST) {
-            link.href = `https://sepolia.etherscan.io/tx/${txResponse.hash}`;
-        } else if (providerURL == BNB_Smart_chain) {
-            link.href = `https://bscscan.com/tx/${txResponse.hash}`;
+        const link = document.getElementById("link");
+        if (link) {
+            link.href = getExplorerUrl(txResponse.hash);
+            link.style.display = "block";
         }
         
-        link.style.display = "block";
-        
         // Log transaction
-        const url = "http://localhost:3000/api/v1/transactions/log";
-        const data = {
-            Sender_address: wallet.address,
-            Receiver_address: toAddress,
-            amount: amount,
-            Network: providerURL,
-            Hash: txResponse.hash,
-            timestamp: txResponse.timestamp
-        };
+        try {
+            const url = "http://localhost:3000/api/v1/transactions/log";
+            const data = {
+                Sender_address: wallet.address,
+                Receiver_address: toAddress,
+                amount: amount,
+                Network: providerURL,
+                Hash: txResponse.hash,
+                timestamp: new Date().toISOString() // Use current timestamp
+            };
+            
+            await fetch(url, {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(data),
+            });
+        } catch (logError) {
+            console.error('Error logging transaction:', logError);
+            // Continue even if logging fails
+        }
         
-        await fetch(url, {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(data),
-        });
-        
-        // Instead of reloading the page, update necessary UI elements
-        document.getElementById("transfer_form").style.display = "none";
-        document.getElementById("home").style.display = "block";
+        // Update UI
+        transferForm.style.display = "none";
+        home.style.display = "block";
         
         // Update balance
         checkBlance(wallet.address);
@@ -797,20 +913,33 @@ async function executeTransaction(amount, toAddress) {
         // Refresh assets list
         myFunction();
         
-        // Show success message (optional)
+        // Show success message
         const userAddress = document.getElementById("userAddress");
-        const originalText = userAddress.getAttribute("data-hover-text");
-        userAddress.setAttribute("data-hover-text", "Transaction successful!");
-        setTimeout(() => {
-            userAddress.setAttribute("data-hover-text", originalText);
-        }, 3000);
+        if (userAddress) {
+            const originalText = userAddress.getAttribute("data-hover-text");
+            userAddress.setAttribute("data-hover-text", "Transaction successful!");
+            setTimeout(() => {
+                userAddress.setAttribute("data-hover-text", originalText);
+            }, 3000);
+        }
         
     } catch (error) {
         console.error("Transaction failed:", error);
-        document.getElementById("transfer_center").style.display = "none";
-        // Show error message to user
-        alert("Transaction failed: " + error.message);
+        transferCenter.style.display = "none";
+        alert("Transaction failed: " + (error.message || 'Unknown error'));
     }
+}
+
+// Helper function to get explorer URL
+function getExplorerUrl(hash) {
+    const explorers = {
+        [POLYGON]: `https://polygonscan.com/tx/${hash}`,
+        [POLYGON_AMOY]: `https://amoy.polygonscan.com/tx/${hash}`,
+        [ETHEREUM]: `https://etherscan.io/tx/${hash}`,
+        [SEPOLIA_TEST]: `https://sepolia.etherscan.io/tx/${hash}`,
+        [BNB_Smart_chain]: `https://bscscan.com/tx/${hash}`
+    };
+    return explorers[providerURL] || '';
 }
 
 //_______________________________________________________________________________________________________________________________________
@@ -951,81 +1080,120 @@ function getSelectedNetwork(e) {
 function loginUser() {
     document.getElementById("createAccount").style.display = "none";
     document.getElementById("LoginUser").style.display = "block";
+    document.querySelector(".wallet_info").style.display = "none"; // Hide wallet info
 }
   
 function createUser() {
-    document.getElementById("createAccount").style.display = "block";
     document.getElementById("LoginUser").style.display = "none";
+    // Skip showing createAccount screen and directly show create_popUp
+    document.getElementById("create_popUp").style.display = "block";
+    document.querySelector(".wallet_info").style.display = "none";
+    
+    // Clear any existing form data
+    document.getElementById("sign_up_email").value = '';
+    document.getElementById("sign_up_password").value = '';
+    
+    // Reset form state
+    document.getElementById("field").style.display = "block";
+    document.getElementById("center").style.display = "none";
+    document.getElementById("accountData").style.display = "none";
+    document.getElementById("sign_up").style.display = "block";
 }
   
 function openCreate() {
     document.getElementById("createAccount").style.display = "none";
     document.getElementById("create_popUp").style.display = "block";
+    document.querySelector(".wallet_info").style.display = "none"; // Hide wallet info
+    
+    // Clear any existing form data
+    document.getElementById("sign_up_email").value = '';
+    document.getElementById("sign_up_password").value = '';
+    
+    // Reset form state
+    document.getElementById("field").style.display = "block";
+    document.getElementById("center").style.display = "none";
+    document.getElementById("accountData").style.display = "none";
+    document.getElementById("sign_up").style.display = "block";
 }
   
 function signUp() {
-    let name = document.getElementById("sign_up_name").value;
     let email = document.getElementById("sign_up_email").value;
     let password = document.getElementById("sign_up_password").value;
-    let passwordConfirm = document.getElementById(
-      "sign_up_passwordConfirm"
-    ).value;
+
+    // Basic validation
+    if (!email || !password) {
+        alert("Please fill in all fields");
+        return;
+    }
+
+    if (!email.includes('@')) {
+        alert("Please enter a valid email address");
+        return;
+    }
+
+    if (password.length < 8) {
+        alert("Password must be at least 8 characters long");
+        return;
+    }
+
     document.getElementById("field").style.display = "none";
     document.getElementById("center").style.display = "block";
-    // console.log(name, email, password, passwordConfirm);
-  
+    document.getElementById("sign_up").style.display = "none";
+
+    // Create new wallet
     let wallet = ethers.Wallet.createRandom();
-  
+
     if (wallet.address) {
-      console.log("address:", wallet.address);
-      console.log("mnemonic:", wallet.mnemonic.phrase);
-      console.log("privateKey:", wallet.privateKey);
-      //API CALL
-      let url = "http://localhost:3000/api/v1/user/signup";
-      let data = {
-        name: name,
-        email: email,
-        password: password,
-        passwordConfirm: passwordConfirm, 
-        address: wallet.address,
-        private_key: wallet.privateKey,
-        mnemonic: wallet.mnemonic.phrase,
-      };
-  
-      fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      })
-        .then((response) => response.json())
-        .then((result) => {
-          document.getElementById("createdAddress").innerHTML = wallet.address;
-          document.getElementById("createdPrivateKey").innerHTML =
-            wallet.privateKey;
-          document.getElementById("createdMnmonic").innerHTML =
-            wallet.mnemonic.phrase;
-          document.getElementById("center").style.display = "none";
-          document.getElementById("accountData").style.display = "block";
-          document.getElementById("sign_up").style.display = "none";
-  
-          let userWallet = {
+        console.log("address:", wallet.address);
+        console.log("mnemonic:", wallet.mnemonic.phrase);
+        console.log("privateKey:", wallet.privateKey);
+
+        // API CALL
+        let url = "http://localhost:3000/api/v1/user/signup";
+        let data = {
+            name: email.split('@')[0], // Use part of email as name
+            email: email,
+            password: password,
+            passwordConfirm: password, // Add password confirmation
             address: wallet.address,
             private_key: wallet.privateKey,
             mnemonic: wallet.mnemonic.phrase,
-          };
-          let jsonObj = JSON.stringify(userWallet);
-          localStorage.setItem("userWallet", jsonObj);
-          document.getElementById("goHomePage").style.display = "block";
-  
-          window.location.reload();
+        };
+
+        fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        })
+        .then((response) => response.json())
+        .then((result) => {
+            if (result.status === 'error') {
+                throw new Error(result.message || 'Signup failed');
+            }
+            document.getElementById("createdAddress").innerHTML = wallet.address;
+            document.getElementById("createdPrivateKey").innerHTML = wallet.privateKey;
+            document.getElementById("createdMnmonic").innerHTML = wallet.mnemonic.phrase;
+            document.getElementById("center").style.display = "none";
+            document.getElementById("accountData").style.display = "block";
+
+            let userWallet = {
+                address: wallet.address,
+                private_key: wallet.privateKey,
+                mnemonic: wallet.mnemonic.phrase,
+            };
+            let jsonObj = JSON.stringify(userWallet);
+            localStorage.setItem("userWallet", jsonObj);
+            document.getElementById("goHomePage").style.display = "block";
         })
         .catch((error) => {
-          // Handle any errors
-          console.error("Error:", error);
+            console.error("Error:", error);
+            document.getElementById("center").style.display = "none";
+            document.getElementById("field").style.display = "block";
+            document.getElementById("sign_up").style.display = "block";
+            alert(error.message || "Failed to create account. Please try again.");
         });
-      //END OF API CALL
     }
 }
   
@@ -1313,14 +1481,16 @@ let fetchTokenBalance = async(tokenAddress,accountAddress) =>
 //_______________________________________________________________________________________________________________________________________
     
 async function myFunction() {
-    initializeNetwork();  // Initialize network before proceeding
-    
+
+    initializeNetwork();
+
     let str = localStorage.getItem("userWallet");
     let parsedObj = JSON.parse(str);
 
     if (parsedObj?.address) {
         document.getElementById("LoginUser").style.display = "none";
         document.getElementById("home").style.display = "block";
+        document.querySelector(".wallet_info").style.display = "block"; // Show wallet info
         privateKey = parsedObj.private_key;
         address = parsedObj.address;
         checkBlance(parsedObj.address);
@@ -1331,6 +1501,8 @@ async function myFunction() {
             headerImg.src = NETWORK_ICONS[providerURL] || DEFAULT_ICON;
             headerImg.alt = getNetworkName(providerURL);
         }
+    }else {
+        document.querySelector(".wallet_info").style.display = "none"; // Hide wallet info
     }
 
     let tokenRender = document.querySelector(".assets");
@@ -2132,5 +2304,27 @@ async function handleMaxAmount() {
         console.error('Error setting max amount:', error);
         alert('Error setting maximum amount');
     }
+}
+
+// Add this function to handle going back to login screen
+function goBackToLogin() {
+    // Hide create account form
+    document.getElementById("create_popUp").style.display = "none";
+    
+    // Show login screen
+    document.getElementById("LoginUser").style.display = "block";
+    
+    // Hide wallet info if visible
+    document.querySelector(".wallet_info").style.display = "none";
+    
+    // Clear form data
+    document.getElementById("sign_up_email").value = '';
+    document.getElementById("sign_up_password").value = '';
+    
+    // Reset form state
+    document.getElementById("field").style.display = "block";
+    document.getElementById("center").style.display = "none";
+    document.getElementById("accountData").style.display = "none";
+    document.getElementById("sign_up").style.display = "block";
 }
 
