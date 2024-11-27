@@ -457,6 +457,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Initialize active network
     initializeActiveNetwork();
+
+    // Add MAX button click handler
+    const maxButton = document.querySelector('.max_button');
+    if (maxButton) {
+        maxButton.addEventListener('click', handleMaxAmount);
+    }
 });
 
 // Keep all your existing code below this point
@@ -1085,6 +1091,12 @@ function openTransfer()
         
         // Initialize token selector when opening transfer form
         initializeTokenSelector();
+        
+        // Initialize MAX button
+        const maxButton = document.querySelector('.max_button');
+        if (maxButton) {
+            maxButton.addEventListener('click', handleMaxAmount);
+        }
     } else {
         console.error('Transfer form or home element not found');
     }
@@ -2070,6 +2082,55 @@ function initializeNetwork() {
                 item.classList.remove('active');
             }
         });
+    }
+}
+
+// Add this function to handle the MAX button click
+async function handleMaxAmount() {
+    try {
+        const provider = new ethers.providers.JsonRpcProvider(providerURL);
+        const selectedToken = document.querySelector('.selected_token');
+        const amountInput = document.getElementById('amount');
+
+        // Get current gas price
+        const gasPrice = await provider.getGasPrice();
+        const gasLimit = 21000; // Standard gas limit for ETH transfers
+        const gasCost = gasPrice.mul(gasLimit);
+
+        if (selectedToken.dataset.address === 'native') {
+            // Handle native token (ETH, MATIC, BNB, etc.)
+            const balance = await provider.getBalance(address);
+            
+            // Subtract gas cost from balance for native token
+            const maxAmount = balance.sub(gasCost);
+            
+            // Convert to readable format and set input value
+            if (maxAmount.gt(0)) {
+                const formattedAmount = ethers.utils.formatEther(maxAmount);
+                amountInput.value = parseFloat(formattedAmount).toFixed(6);
+            } else {
+                amountInput.value = '0';
+            }
+        } else {
+            // Handle ERC20 tokens
+            const tokenAddress = selectedToken.dataset.address;
+            const ERC20_ABI = [
+                "function balanceOf(address) view returns (uint256)",
+                "function decimals() view returns (uint8)"
+            ];
+            
+            const tokenContract = new ethers.Contract(tokenAddress, ERC20_ABI, provider);
+            const [balance, decimals] = await Promise.all([
+                tokenContract.balanceOf(address),
+                tokenContract.decimals()
+            ]);
+            
+            const formattedAmount = ethers.utils.formatUnits(balance, decimals);
+            amountInput.value = parseFloat(formattedAmount).toFixed(6);
+        }
+    } catch (error) {
+        console.error('Error setting max amount:', error);
+        alert('Error setting maximum amount');
     }
 }
 

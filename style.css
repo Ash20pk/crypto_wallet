@@ -308,8 +308,7 @@ body {
 
 #heading {
   text-align: center;
-  margin: 2em;
-  color: rgb(29, 190, 0);
+  color: #27c105;
   font-size: 1.2em;
 }
 
@@ -601,14 +600,15 @@ body {
 .transfer_form {
   display: none;
   background: var(--background);
-  padding: 1.5rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
   position: relative;
 }
 
 .transfer_form .goBack {
   position: absolute;
-  top: 1rem;
-  left: 1rem;
+  top: 1.5rem;
+  left: 1.5rem;
   width: 24px;
   height: 24px;
   cursor: pointer;
@@ -620,7 +620,6 @@ body {
 }
 
 .transfer_form #heading {
-  margin-top: 3rem;
   margin-bottom: 2rem;
   font-size: 1.5rem;
   color: var(--primary);
@@ -656,12 +655,10 @@ body {
 
 .transfer_form #transferFund {
   width: 100%;
-  margin-top: 2rem;
-  padding: 1rem;
   font-size: 1rem;
-  background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+  background: transparent;
   color: var(--text);
-  border: none;
+  border: solid 1px #27c105;
   border-radius: var(--border-radius);
   cursor: pointer;
   transition: all 0.3s ease;
@@ -784,7 +781,7 @@ body {
   border: none;
   outline: none;
   transition: 0.4s ease-in-out;
-  background-image: linear-gradient(163deg, #27c105 0%, #111112 100%);
+  border: 1px solid #27c105;
   color: rgb(0, 0, 0);
 
 }
@@ -2241,11 +2238,10 @@ body {
 }
 
 .receive_form #heading {
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     color: var(--primary);
     text-align: center;
     margin: 1.5rem 0;
-    padding-top: 0.5rem;
 }
 
 .receive_form .token_selector {
