@@ -1170,14 +1170,6 @@ textarea {
     transition: transform 0.2s ease;
 }
 
-.accountData {
-  word-wrap: break-word;
-}
-
-.accountData {
-  display: none;
-}
-
 #goHomePage {
   display: none;
 }
@@ -1837,12 +1829,6 @@ body {
   font-size: 0.9rem;
 }
 
-.detail_value {
-  color: var(--text);
-  font-size: 0.9rem;
-  font-family: monospace;
-}
-
 .confirmation_buttons {
   display: flex;
   gap: 1rem;
@@ -2370,8 +2356,6 @@ body {
 .wallet_details {
     background: rgba(255, 255, 255, 0.02);
     border-radius: var(--border-radius);
-    padding: 1.5rem;
-    margin-bottom: 2rem;
 }
 
 .detail_section {
@@ -2384,9 +2368,11 @@ body {
 
 .detail_header {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
-    margin-bottom: 0.5rem;
+    gap: 2rem;
+    margin-bottom: 1rem;
+    flex-direction: row;
 }
 
 .detail_header h3 {
@@ -2422,16 +2408,6 @@ body {
 .copy_button.copied {
     background: var(--primary);
     color: white;
-}
-
-.detail_value {
-    background: rgba(255, 255, 255, 0.03);
-    padding: 0.75rem;
-    border-radius: 4px;
-    font-family: monospace;
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-    word-break: break-all;
 }
 
 .security_warning {
@@ -2523,4 +2499,117 @@ body {
 .selected_token {
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(39, 193, 5, 0.1);
+}
+
+/* Account Creation Success Styles */
+.accountData {
+    display: none;
+    background: var(--background);
+}
+
+
+.account_success_header h2 {
+    color: var(--primary);
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin: 0;
+}
+
+.detail_section {
+    margin-bottom: 1.5rem;
+}
+
+.detail_section:last-child {
+    margin-bottom: 0;
+}
+
+.detail_header h3 {
+    color: var(--text);
+    font-size: 0.95rem;
+    font-weight: 500;
+    margin: 0;
+}
+
+.detail_value {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: var(--border-radius);
+    font-family: monospace;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    word-break: break-all;
+    line-height: 1.4;
+}
+
+.accountData .copy_button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    margin-top: 0;
+    background: rgba(39, 193, 5, 0.1);
+    border: none;
+    border-radius: 4px;
+    color: var(--primary);
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.accountData .copy_button:hover {
+    background: rgba(39, 193, 5, 0.2);
+}
+
+.accountData .copy_button.copied {
+    background: var(--primary);
+    color: white;
+}
+
+.accountData .security_warning {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 1rem;
+    background: rgba(255, 59, 59, 0.1);
+    border-radius: var(--border-radius);
+    margin: 2rem 0;
+}
+
+.accountData .security_warning svg {
+    color: #ff3d3d;
+    flex-shrink: 0;
+    margin-top: 0.2rem;
+}
+
+.accountData .security_warning p {
+    color: #ff3d3d;
+    font-size: 0.85rem;
+    margin: 0;
+    text-align: left;
+    line-height: 1.4;
+}
+
+.accountData #goHomePage {
+    display: block;
+    width: 100%;
+    padding: 1rem;
+    font-size: 1rem;
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--primary);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: auto;
+}
+
+.accountData #goHomePage:hover {
+    background: rgba(39, 193, 5, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(39, 193, 5, 0.2);
+}
+
+/* Hide create header when showing account data */
+.accountData:not([style*="display: none"]) ~ .create_header,
+.accountData:not([style*="display: none"]) + .create_header {
+    display: none;
 }
