@@ -177,25 +177,10 @@
 
                 <div id="accountData" class="accountData">
                     <div class="account_success_header">
-                        <img src="./assets/success.png" alt="Success" class="success_icon"/>
                         <h2>Account Created!</h2>
-                        <p class="success_message">Your wallet has been created successfully</p>
                     </div>
 
                     <div class="wallet_details">
-                        <div class="detail_section">
-                            <div class="detail_header">
-                                <h3>Wallet Address</h3>
-                                <button class="copy_button" data-clipboard="address">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                                    </svg>
-                                    Copy
-                                </button>
-                            </div>
-                            <p id="createdAddress" class="detail_value"></p>
-                        </div>
 
                         <div class="detail_section">
                             <div class="detail_header">
@@ -301,8 +286,10 @@
         <!-- TRANSFER COMPONENT -->
         <div id="transfer_form" class="transfer_form">
             <div class="form">
-                <img id="goBack" class="goBack" src="./assets/_back.png" alt=""/>
-                <p id="heading">Send</p>
+                <div class="create_header">
+                    <img id="goBack" class="goBack" src="./assets/_back.png" alt=""/>
+                    <p id="heading">Send</p>
+                </div>
                 
                 <div class="token_selector" id="token_selector">
                     <div class="selected_token">
@@ -317,16 +304,27 @@
                     </div>
                 </div>
 
-                <div class="field amount_field">
-                    <input type="number" class="input-field" placeholder="Amount" id="amount"/>
-                    <span class="max_button">MAX</span>
+                <div class="transfer_fields">
+                    <div class="field amount_field">
+                        <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="12" y1="8" x2="12" y2="16"/>
+                            <line x1="8" y1="12" x2="16" y2="12"/>
+                        </svg>
+                        <input type="number" class="input-field" placeholder="Enter amount" id="amount"/>
+                        <span class="max_button">MAX</span>
+                    </div>
+
+                    <div class="field address_field">
+                        <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                            <line x1="8" y1="21" x2="16" y2="21"/>
+                            <line x1="12" y1="17" x2="12" y2="21"/>
+                        </svg>
+                        <input type="text" class="input-field" placeholder="Enter recipient address" id="address"/>
+                    </div>
                 </div>
 
-                <div class="field">
-                    <input type="text" class="input-field" placeholder="Recipient address" id="address"/>
-                </div>
-
-                <!-- Add the loading center -->
                 <div id="transfer_center" class="center">
                     <div class="loader">
                         <div class="bar1"></div>
@@ -344,9 +342,16 @@
                     </div>
                 </div>
 
-                <small>
-                    <a target="_blank" id="link">Check Your Transaction</a>
-                </small>
+                <div class="transaction_link">
+                    <a target="_blank" id="link" class="transaction_hash">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                            <polyline points="15 3 21 3 21 9"/>
+                            <line x1="10" y1="14" x2="21" y2="3"/>
+                        </svg>
+                        View Transaction
+                    </a>
+                </div>
 
                 <button id="transferFund" class="button3 connectWallet">Send</button>
             </div>

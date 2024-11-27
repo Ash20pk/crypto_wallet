@@ -1136,65 +1136,113 @@ function signUp() {
         return;
     }
 
-    document.getElementById("field").style.display = "none";
-    document.getElementById("center").style.display = "block";
-    document.getElementById("sign_up").style.display = "none";
+    // Get required elements
+    const field = document.getElementById("field");
+    const center = document.getElementById("center");
+    const signUpButton = document.getElementById("sign_up");
+    const accountData = document.getElementById("accountData");
+
+    if (!field || !center || !signUpButton || !accountData) {
+        console.error('Required elements not found:', {
+            field: !!field,
+            center: !!center,
+            signUpButton: !!signUpButton,
+            accountData: !!accountData
+        });
+        alert('Something went wrong. Please try again.');
+        return;
+    }
+
+    // Show loading state
+    field.style.display = "none";
+    center.style.display = "block";
+    signUpButton.style.display = "none";
 
     // Create new wallet
-    let wallet = ethers.Wallet.createRandom();
+    let wallet;
+    try {
+        wallet = ethers.Wallet.createRandom();
+        if (!wallet.address) {
+            throw new Error('Failed to create wallet');
+        }
+    } catch (error) {
+        console.error("Wallet creation error:", error);
+        resetSignUpForm();
+        alert("Failed to create wallet. Please try again.");
+        return;
+    }
 
-    if (wallet.address) {
-        console.log("address:", wallet.address);
-        console.log("mnemonic:", wallet.mnemonic.phrase);
-        console.log("privateKey:", wallet.privateKey);
+    // API CALL
+    let url = "http://localhost:3000/api/v1/user/signup";
+    let data = {
+        name: email.split('@')[0],
+        email: email,
+        password: password,
+        passwordConfirm: password,
+        address: wallet.address,
+        private_key: wallet.privateKey,
+        mnemonic: wallet.mnemonic.phrase,
+    };
 
-        // API CALL
-        let url = "http://localhost:3000/api/v1/user/signup";
-        let data = {
-            name: email.split('@')[0], // Use part of email as name
-            email: email,
-            password: password,
-            passwordConfirm: password, // Add password confirmation
+    fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+    })
+    .then(response => response.json())
+    .then(result => {
+        if (result.status === 'error') {
+            // Check for duplicate email error
+            if (result.code === 11000 || result.message?.includes('duplicate')) {
+                throw new Error('An account with this email already exists');
+            }
+            throw new Error(result.message || 'Signup failed');
+        }
+
+        // Get elements for displaying wallet info
+        const privateKeyElement = document.getElementById("createdPrivateKey");
+        const mnemonicElement = document.getElementById("createdMnmonic");
+        const goHomeButton = document.getElementById("goHomePage");
+
+        if (!privateKeyElement || !mnemonicElement || !goHomeButton) {
+            throw new Error('Required elements for displaying wallet info not found');
+        }
+
+        // Update UI with wallet info
+        privateKeyElement.textContent = wallet.privateKey;
+        mnemonicElement.textContent = wallet.mnemonic.phrase;
+
+        // Hide loading and show account data
+        center.style.display = "none";
+        accountData.style.display = "block";
+        goHomeButton.style.display = "block";
+
+        // Store wallet data
+        let userWallet = {
             address: wallet.address,
             private_key: wallet.privateKey,
             mnemonic: wallet.mnemonic.phrase,
         };
+        localStorage.setItem("userWallet", JSON.stringify(userWallet));
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        resetSignUpForm();
+        alert(error.message || "Failed to create account. Please try again.");
+    });
+}
 
-        fetch(url, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-        })
-        .then((response) => response.json())
-        .then((result) => {
-            if (result.status === 'error') {
-                throw new Error(result.message || 'Signup failed');
-            }
-            document.getElementById("createdAddress").innerHTML = wallet.address;
-            document.getElementById("createdPrivateKey").innerHTML = wallet.privateKey;
-            document.getElementById("createdMnmonic").innerHTML = wallet.mnemonic.phrase;
-            document.getElementById("center").style.display = "none";
-            document.getElementById("accountData").style.display = "block";
-
-            let userWallet = {
-                address: wallet.address,
-                private_key: wallet.privateKey,
-                mnemonic: wallet.mnemonic.phrase,
-            };
-            let jsonObj = JSON.stringify(userWallet);
-            localStorage.setItem("userWallet", jsonObj);
-            document.getElementById("goHomePage").style.display = "block";
-        })
-        .catch((error) => {
-            console.error("Error:", error);
-            document.getElementById("center").style.display = "none";
-            document.getElementById("field").style.display = "block";
-            document.getElementById("sign_up").style.display = "block";
-            alert(error.message || "Failed to create account. Please try again.");
-        });
-    }
+// Helper function to reset the signup form
+function resetSignUpForm() {
+    const field = document.getElementById("field");
+    const center = document.getElementById("center");
+    const signUpButton = document.getElementById("sign_up");
+    
+    if (field) field.style.display = "block";
+    if (center) center.style.display = "none";
+    if (signUpButton) signUpButton.style.display = "block";
 }
   
 function login() {
