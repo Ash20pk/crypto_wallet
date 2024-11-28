@@ -77,7 +77,7 @@ This Crypto Wallet application includes the following features:
   <tr>
     <td><img src="https://github.com/user-attachments/assets/a5241808-6880-4a1a-9454-3f3460b0c40da" alt="Screenshot 4" width="150"></td>
     <td><img src="https://github.com/user-attachments/assets/1f4bd4e9-083e-4a1e-aa7b-a31c3579ed32" alt="Screenshot 5" width="150"></td>
-    <td><img src="https://github.com/user-attachments/assets/1f4bd4e9-083e-4a1e-aa7b-a31c3579ed32" alt="Screenshot 6" width="150"></td>
+    <td><img src="https://github.com/user-attachments/assets/5d6495cc-b491-4c96-ab74-75a19d3962b4" alt="Screenshot 6" width="150"></td>
     <td><img src="https://github.com/user-attachments/assets/342d6a11-e26e-4105-9413-b2b3843cef5d" alt="Screenshot 8" width="150"></td>
       <td><img src="https://github.com/user-attachments/assets/8e315bde-3394-46c2-98c9-d68b2433df6d" alt="Screenshot 9" width="150"></td>
 
