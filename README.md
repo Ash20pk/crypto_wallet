@@ -49,8 +49,8 @@ This Crypto Wallet application includes the following features:
     npm install --y
     ```
 3. Configure MongoDB:
-      - Open the config.env and server.js files.
-      - Replace the placeholders for MongoDB username and password with your actual credentials.
+      - Open the config.env files.
+      - Replace the placeholders for MONGODB_URI and MONGODB_DB_NAME with your actual credentials.
 
 4. Start the Development Server: Run the following command to launch the app locally:
     ```bash
