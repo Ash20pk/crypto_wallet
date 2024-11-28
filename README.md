@@ -41,11 +41,11 @@ This Crypto Wallet application includes the following features:
 ### How to Run the Crypto Wallet
 1. Clone the repository:
     ```bash
-    git clone https://github.com/jatinmeta/crypto_wallet.git
+    https://github.com/0xmetaschool/crypto-wallet.git
     ```
 2. Install Dependencies: Navigate to the project directory and install the necessary dependencies:
     ```bash
-    cd crypto_wallet/chromeapi
+    cd crypto-walle/chromeapi
     npm install --y
     ```
 3. Configure MongoDB:
@@ -102,7 +102,7 @@ This Crypto Wallet application includes the following features:
 
 We love contributions! Here's how you can help make the Crypto Wallet even better:
 
-1. Fork the project (`git repo fork https://github.com/jatinmeta/crypto_wallet.git`)
+1. Fork the project (`git repo fork https://github.com/0xmetaschool/crypto-wallet.git`)
 2. Create your feature branch (`git checkout -b New_Feature`)
 3. Commit your changes (`git commit -m 'Added New Feature'`)
 
