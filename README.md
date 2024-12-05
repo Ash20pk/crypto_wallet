@@ -34,23 +34,23 @@ This Crypto Wallet application includes the following features:
     Follow these steps to set up your MongoDB cluster:
     
     - **Sign Up/Login:** Visit [MongoDB Website](https://www.mongodb.com/), and sign up or log in.
-    - **Create a Cluster:** Once logged in, click on "Build a Cluster". Choose an AWS cloud provider, select a region, and pick a cluster tier, then click "Create Cluster".
+    - **Create a Cluster:** Once logged in, click on "Build a Cluster". Choose an AWS cloud provider, select a region, and make sure you choose a connection method :Connecting with MongoDB for VS Code, then click "Create Cluster".
     - **Database Access:** Go to the "Database Access" section to find your MongoDB username and password. Copy these credentials for use in the next steps.
     - **Connection String:** You will need these credentials to connect to your MongoDB cluster, which will be used in your configuration files.
 
 ### How to Run the Crypto Wallet
 1. Clone the repository:
     ```bash
-    git clone https://github.com/jatinmeta/crypto_wallet.git
+    https://github.com/0xmetaschool/crypto-wallet.git
     ```
 2. Install Dependencies: Navigate to the project directory and install the necessary dependencies:
     ```bash
-    cd crypto_wallet/chromeapi
+    cd crypto-walle/chromeapi
     npm install --y
     ```
 3. Configure MongoDB:
-      - Open the config.env and server.js files.
-      - Replace the placeholders for MongoDB username and password with your actual credentials.
+      - Open the config.env files.
+      - Replace the placeholders for MONGODB_URI and MONGODB_DB_NAME with your actual credentials.
 
 4. Start the Development Server: Run the following command to launch the app locally:
     ```bash
@@ -65,20 +65,21 @@ This Crypto Wallet application includes the following features:
 
 ## Screenshots
 
+
 <table>
   <tr>
-    <td><img src="https://github.com/user-attachments/assets/aff72ed9-d4f6-4de4-828b-e335d1a0d519" alt="Screenshot 1" width="150"></td>
-    <td><img src="https://github.com/user-attachments/assets/9434899a-269f-494f-b131-222817b3cfba" alt="Screenshot 2" width="150"></td>
-    <td><img src="https://github.com/user-attachments/assets/1d50448b-6cb1-41b8-bf0e-fdbe72be3816" alt="Screenshot 3" width="150"></td>
-    <td><img src="https://github.com/user-attachments/assets/084886f3-32b3-4e21-9e47-20f1550fb5b2" alt="Screenshot 9" width="150"></td>
-    <td><img src="https://github.com/user-attachments/assets/ca7afda5-cd0b-41cb-bc74-1a478733fd3a" alt="Screenshot 7" width="150"></td>
+    <td><img src="https://github.com/user-attachments/assets/6c5b612f-9c6e-4890-9b73-2ab7dccf42c0" alt="Screenshot 1" width="150"></td>
+    <td><img src="https://github.com/user-attachments/assets/f9c8137f-e8e6-4cb2-ae3b-27b5c6c9590a" alt="Screenshot 2" width="150"></td>
+    <td><img src="https://github.com/user-attachments/assets/5baaaa1f-61ee-4789-8b98-619de61c182c" alt="Screenshot 3" width="150"></td>
+    <td><img src="https://github.com/user-attachments/assets/d9b8aba9-eae2-4262-bd5d-3bace9fb4154" alt="Screenshot 9" width="150"></td>
+    <td><img src="https://github.com/user-attachments/assets/0fc21ee0-b666-4000-b762-8f0cbf25f82d" alt="Screenshot 7" width="150"></td>
   </tr>
   <tr>
-    <td><img src="https://github.com/user-attachments/assets/77d88cf8-9d9f-48ca-93f7-dbe7d0e3681a" alt="Screenshot 4" width="150"></td>
-    <td><img src="https://github.com/user-attachments/assets/292c83f8-8d8c-4681-ab52-fb73f374fba4" alt="Screenshot 5" width="150"></td>
-    <td><img src="https://github.com/user-attachments/assets/fbce9cf5-6fb2-4d47-adec-9b36d2c80cc0" alt="Screenshot 6" width="150"></td>
-    <td><img src="https://github.com/user-attachments/assets/8ab7cbc9-08e4-4c85-b717-1a6b23d4bc0b" alt="Screenshot 8" width="150"></td>
-      <td><img src="https://github.com/user-attachments/assets/24257266-3e1d-43e3-98f9-c71c9454b1c3" alt="Screenshot 9" width="150"></td>
+    <td><img src="https://github.com/user-attachments/assets/a5241808-6880-4a1a-9454-3f3460b0c40da" alt="Screenshot 4" width="150"></td>
+    <td><img src="https://github.com/user-attachments/assets/1f4bd4e9-083e-4a1e-aa7b-a31c3579ed32" alt="Screenshot 5" width="150"></td>
+    <td><img src="https://github.com/user-attachments/assets/5d6495cc-b491-4c96-ab74-75a19d3962b4" alt="Screenshot 6" width="150"></td>
+    <td><img src="https://github.com/user-attachments/assets/342d6a11-e26e-4105-9413-b2b3843cef5d" alt="Screenshot 8" width="150"></td>
+      <td><img src="https://github.com/user-attachments/assets/8e315bde-3394-46c2-98c9-d68b2433df6d" alt="Screenshot 9" width="150"></td>
 
   </tr>
 
@@ -101,7 +102,7 @@ This Crypto Wallet application includes the following features:
 
 We love contributions! Here's how you can help make the Crypto Wallet even better:
 
-1. Fork the project (`git repo fork https://github.com/jatinmeta/crypto_wallet.git`)
+1. Fork the project (`git repo fork https://github.com/0xmetaschool/crypto-wallet.git`)
 2. Create your feature branch (`git checkout -b New_Feature`)
 3. Commit your changes (`git commit -m 'Added New Feature'`)
 
